@@ -42,39 +42,39 @@
   }
 
   .dark {
-    --background: 240 64% 27%; /* Dark Navy #191970 */
-    --foreground: 180 10% 90%; /* Light cyan/gray for text on dark navy */
-    --card: 240 60% 32%; 
-    --card-foreground: 180 10% 90%;
-    --popover: 240 60% 30%;
-    --popover-foreground: 180 10% 90%;
+    --background: 240 64% 8%; /* Even Darker Navy for deep space feel */
+    --foreground: 180 15% 90%; /* Lighter cyan/gray for text */
+    --card: 240 60% 12%; /* Slightly lighter than background for depth */
+    --card-foreground: 180 15% 88%;
+    --popover: 240 60% 10%; /* Darker popover */
+    --popover-foreground: 180 15% 90%;
     --primary: 182 100% 74%; /* Electric Blue #7DF9FF */
-    --primary-foreground: 240 64% 10%; 
-    --secondary: 240 50% 40%; 
-    --secondary-foreground: 180 10% 90%;
-    --muted: 240 50% 35%;
-    --muted-foreground: 180 10% 60%;
+    --primary-foreground: 240 64% 5%; /* Very dark navy for text on primary */
+    --secondary: 240 50% 20%; /* Muted navy */
+    --secondary-foreground: 180 15% 85%;
+    --muted: 240 50% 15%; /* Darker muted */
+    --muted-foreground: 180 10% 65%; /* Softer muted text */
     --accent: 282 100% 72%; /* Cyber Purple #D070FF */
-    --accent-foreground: 240 64% 10%; 
-    --destructive: 0 70% 50%; /* Adjusted destructive for dark theme */
+    --accent-foreground: 240 64% 5%; /* Very dark navy for text on accent */
+    --destructive: 0 70% 55%; /* Adjusted destructive for dark theme */
     --destructive-foreground: 0 0% 98%;
-    --border: 240 50% 45%;
-    --input: 240 50% 45%;
+    --border: 240 50% 25%; /* Slightly more visible border */
+    --input: 240 50% 18%; /* Darker input background */
     --ring: 182 100% 74%; /* Electric Blue for rings */
-    --chart-1: 182 80% 60%; /* Adjusted chart colors for dark theme */
+    --chart-1: 182 80% 60%; 
     --chart-2: 282 70% 65%;
     --chart-3: 210 70% 60%;
     --chart-4: 43 74% 70%;
     --chart-5: 27 87% 70%;
 
     /* Sidebar Dark Theme */
-    --sidebar-background: 240 64% 22%; /* Darker Navy */
+    --sidebar-background: 240 64% 10%; 
     --sidebar-foreground: 180 15% 85%;
-    --sidebar-primary: 182 100% 74%; /* Electric Blue */
-    --sidebar-primary-foreground: 240 64% 10%;
-    --sidebar-accent: 282 100% 72%; /* Cyber Purple */
-    --sidebar-accent-foreground: 240 64% 10%;
-    --sidebar-border: 240 50% 35%;
+    --sidebar-primary: 182 100% 74%; 
+    --sidebar-primary-foreground: 240 64% 5%;
+    --sidebar-accent: 282 100% 72%; 
+    --sidebar-accent-foreground: 240 64% 5%;
+    --sidebar-border: 240 50% 20%;
     --sidebar-ring: 182 100% 74%;
   }
 }
@@ -86,4 +86,13 @@
   body {
     @apply bg-background text-foreground;
   }
+  /* For the animated gradient text on the homepage hero title */
+  .animate-gradient-x {
+    background-size: 200% 200%; /* Increased size for smoother diagonal movement */
+    animation: gradient-x 6s ease infinite;
+  }
 }
+
+/* Ensure Tailwind JIT includes dynamic animation classes if you plan to use them heavily */
+/* For example, if you use delays like delay-300, delay-400, etc. often. */
+/* Typically, Tailwind's JIT mode handles this well if the classes appear in your files. */
