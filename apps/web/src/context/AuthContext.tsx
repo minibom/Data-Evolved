@@ -2,8 +2,8 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { 
-  User, 
+import {
+  User,
   onAuthStateChanged,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
@@ -12,14 +12,16 @@ import {
   sendPasswordResetEmail as firebaseSendPasswordResetEmail,
   setPersistence,
   browserLocalPersistence, // Or browserSessionPersistence
-  type Auth asFirebaseAuthType // Renamed to avoid conflict
+  type Auth // Import the Auth type directly
 } from 'firebase/auth';
+type FirebaseAuthType = Auth; // Alias it here, "Renamed to avoid conflict"
+
 import { auth as firebaseAuthInstance } from '@/lib/firebaseClient'; // Import your Firebase auth instance
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 
 export interface UserProfile extends User { // Extend Firebase User type
-  isAdmin?: boolean; 
+  isAdmin?: boolean;
   factionId?: string;
   ghz?: number;
   // Add other custom fields from your PlayerData type that you want readily available
@@ -74,23 +76,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Set persistence to local (keeps user signed in across browser sessions)
-    // You can change this to browserSessionPersistence for session-only sign-in
     setPersistence(firebaseAuthInstance as FirebaseAuthType, browserLocalPersistence)
       .then(() => {
         const unsubscribe = onAuthStateChanged(firebaseAuthInstance as FirebaseAuthType, async (user) => {
           if (user) {
             const tokenResult = await user.getIdTokenResult();
-            const isAdminClaim = !!tokenResult.claims.admin; // Check for 'admin' custom claim
-            
-            // You might fetch additional profile data from Firestore here
-            // For example: const userProfileData = await fetch(`/api/user?userId=${user.uid}`).then(res => res.json());
+            const isAdminClaim = !!tokenResult.claims.admin;
 
-            setCurrentUser({ 
-              ...user, 
+            setCurrentUser({
+              ...user,
               isAdmin: isAdminClaim,
-              // factionId: userProfileData?.factionId, // Example
-              // ghz: userProfileData?.currentGHZ,     // Example
             });
           } else {
             setCurrentUser(null);
@@ -101,13 +96,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       })
       .catch((error) => {
         console.error("Error setting auth persistence:", error);
-        setLoading(false); // Still need to stop loading if persistence fails
+        setLoading(false);
       });
   }, []);
 
   const getFirebaseToken = async (): Promise<string | null> => {
     if (firebaseAuthInstance.currentUser) {
-      return firebaseAuthInstance.currentUser.getIdToken(true); // true to force refresh
+      return firebaseAuthInstance.currentUser.getIdToken(true);
     }
     return null;
   };
@@ -121,29 +116,26 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const userCredential = await createUserWithEmailAndPassword(firebaseAuthInstance as FirebaseAuthType, email, pass);
     if (userCredential.user) {
       await firebaseUpdateProfile(userCredential.user, { displayName });
-      
-      // After Firebase user is created, call API to create backend profile
-      // This separates Auth user from your application's user profile data structure.
+
       try {
         const token = await userCredential.user.getIdToken();
-        const profileResponse = await fetch('/api/auth/route', { // This is a bit of a misnomer if it's in route.ts, ensure it's the correct endpoint
+        const profileResponse = await fetch('/api/auth/route', {
           method: 'POST',
-          headers: { 
+          headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // Send token for server-side validation
+            'Authorization': `Bearer ${token}`
           },
-          body: JSON.stringify({ 
-            action: 'create_profile', 
-            uid: userCredential.user.uid, 
+          body: JSON.stringify({
+            action: 'create_profile',
+            uid: userCredential.user.uid,
             email: userCredential.user.email,
-            displayName 
+            displayName
           }),
         });
         if (!profileResponse.ok) {
           const errorData = await profileResponse.json();
           console.error("Failed to create backend user profile:", errorData.error);
           toast({ title: "Profile Creation Issue", description: errorData.error || "Could not sync profile to backend.", variant: "destructive" });
-          // Note: User is still created in Firebase Auth. Decide on handling this.
         }
       } catch (profileError) {
         console.error("Error creating backend user profile:", profileError);
@@ -154,7 +146,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   const logout = async () => {
     await firebaseSignOut(firebaseAuthInstance as FirebaseAuthType);
-    router.push('/auth/login'); 
+    router.push('/auth/login');
   };
 
   const sendPasswordReset = async (email: string) => {
