@@ -1,6 +1,6 @@
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
-import type { AIDirective } from '@/types';
+import type { AIDirective } from '@packages/common-types/aiFaction';
 
 // Mock data store
 let mockDirectives: AIDirective[] = [

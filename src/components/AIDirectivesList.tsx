@@ -2,12 +2,13 @@
 "use client";
 
 import { useEffect, useState, useCallback } from 'react';
-import type { AIDirective, AIFactionName } from '@/types';
+import type { AIDirective, AIFactionName } from '@packages/common-types/aiFaction';
 import AIDirectiveCard from './AIDirectiveCard';
 import { Button } from '@/components/ui/button';
 import { Loader2, RotateCw, ServerCrash, BrainCircuit, Zap } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardHeader, CardContent, CardFooter } from '@/components/ui/card'; // For Skeleton
 
 export default function AIDirectivesList() {
   const [directives, setDirectives] = useState<AIDirective[]>([]);
@@ -50,10 +51,8 @@ export default function AIDirectivesList() {
         const errorData = await response.json();
         throw new Error(errorData.error || `Failed to generate directive for ${factionName}`);
       }
-      const newDirective = await response.json();
-      // Add new directive to list or refetch
-      // setDirectives(prev => [newDirective, ...prev]);
-      await fetchDirectives(); // Refetch to get the latest list including the new one
+      // const newDirective = await response.json(); // No longer directly adding, refetch handles it
+      await fetchDirectives(); 
       toast({ title: "Success", description: `${factionName} directive generated and is pending review.` });
     } catch (err: any) {
       setError(err.message);
@@ -73,7 +72,7 @@ export default function AIDirectivesList() {
       if (!response.ok) {
         throw new Error('Failed to update directive status');
       }
-      await fetchDirectives(); // Refresh the list
+      await fetchDirectives(); 
       toast({ title: "Status Updated", description: `Directive ${id} status set to ${status}.` });
     } catch (err: any) {
       toast({ title: "Error", description: `Failed to update status: ${err.message}`, variant: "destructive" });
@@ -97,6 +96,8 @@ export default function AIDirectivesList() {
     if (status === 'all') return directives;
     return directives.filter(d => d.status === status);
   }
+
+  const Skeleton = ({ className }: {className?: string}) => <div className={`bg-muted animate-pulse rounded ${className}`} />;
 
   const renderDirectiveList = (filteredDirectives: AIDirective[]) => {
     if (isLoading) {
@@ -128,10 +129,6 @@ export default function AIDirectivesList() {
     );
   }
   
-  // Skeleton component for loading state (simplified)
-  const Skeleton = ({ className }: {className?: string}) => <div className={`bg-muted animate-pulse rounded ${className}`} />;
-
-
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap justify-between items-center gap-4">

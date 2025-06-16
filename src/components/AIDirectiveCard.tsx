@@ -1,5 +1,5 @@
 // @/components/AIDirectiveCard.tsx
-import type { AIDirective, AICoreAIDirective, AnonymousAIDirective } from '@/types';
+import type { AIDirective, AICoreAIDirective } from '@packages/common-types/aiFaction';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -13,7 +13,7 @@ interface AIDirectiveCardProps {
 
 export default function AIDirectiveCard({ directive, onUpdateStatus }: AIDirectiveCardProps) {
   const FactionIcon = directive.factionName === 'AICore' ? Bot : Zap;
-  const factionColor = directive.factionName === 'AICore' ? 'text-blue-500' : 'text-purple-500'; // Using direct colors as theme accent might be too strong for icons.
+  const factionColor = directive.factionName === 'AICore' ? 'text-blue-500' : 'text-purple-500'; 
   
   const statusConfig = {
     active: { icon: CheckCircle, color: 'bg-green-500', label: 'Active' },
@@ -46,10 +46,10 @@ export default function AIDirectiveCard({ directive, onUpdateStatus }: AIDirecti
         <blockquote className="border-l-4 border-primary pl-4 py-2 bg-muted/50 rounded-r-md">
           <p className="italic text-foreground">"{directive.rawOutput.directive}"</p>
         </blockquote>
-        {(directive as AICoreAIDirective).explanation && (
+        {(directive as AICoreAIDirective).rawOutput.explanation && (
           <>
             <p className="text-sm mt-3 mb-1 font-medium">Explanation:</p>
-            <p className="text-xs text-muted-foreground">{(directive as AICoreAIDirective).explanation}</p>
+            <p className="text-xs text-muted-foreground">{(directive as AICoreAIDirective).rawOutput.explanation}</p>
           </>
         )}
       </CardContent>

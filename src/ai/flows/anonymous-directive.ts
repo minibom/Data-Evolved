@@ -3,23 +3,18 @@
  * @fileOverview This file defines the Genkit flow for Anonymous Directive Generation.
  *
  * anonymousDirective - A function that generates strategic directives for the Anonymous faction.
- * AnonymousDirectiveInput - The input type for the anonymousDirective function.
- * AnonymousDirectiveOutput - The return type for the anonymousDirective function.
+ * AnonymousDirectiveInput - The input type for the anonymousDirective function. (Imported)
+ * AnonymousDirectiveOutput - The return type for the anonymousDirective function. (Imported)
  */
 
 import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import {
+  AnonymousDirectiveInputSchema,
+  type AnonymousDirectiveInput,
+  AnonymousDirectiveOutputSchema,
+  type AnonymousDirectiveOutput
+} from '@packages/common-types/aiFlowTypes';
 
-const AnonymousDirectiveInputSchema = z.object({
-  gameState: z.string().describe('The current game state.'),
-  factionGoals: z.string().describe('The current goals of the Anonymous faction.'),
-});
-export type AnonymousDirectiveInput = z.infer<typeof AnonymousDirectiveInputSchema>;
-
-const AnonymousDirectiveOutputSchema = z.object({
-  directive: z.string().describe('A strategic directive for the Anonymous faction.'),
-});
-export type AnonymousDirectiveOutput = z.infer<typeof AnonymousDirectiveOutputSchema>;
 
 export async function anonymousDirective(input: AnonymousDirectiveInput): Promise<AnonymousDirectiveOutput> {
   return anonymousDirectiveFlow(input);

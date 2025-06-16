@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { aiCoreDirective, AICoreDirectiveInput } from '@/ai/flows/ai-core-directive';
-import { anonymousDirective, AnonymousDirectiveInput } from '@/ai/flows/anonymous-directive';
-import type { AIFactionName } from '@/types';
+import { aiCoreDirective } from '@/ai/flows/ai-core-directive';
+import { anonymousDirective } from '@/ai/flows/anonymous-directive';
+import type { AIFactionName, AIDirective } from '@packages/common-types/aiFaction';
+import type { AICoreDirectiveInput, AICoreDirectiveOutput, AnonymousDirectiveInput, AnonymousDirectiveOutput } from '@packages/common-types/aiFlowTypes';
+
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,8 +16,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Faction name is required (AICore or Anonymous)' }, { status: 400 });
     }
 
-    let result;
-    let rawOutput;
+    let result: AICoreDirectiveOutput | AnonymousDirectiveOutput;
+    let rawOutput: AICoreDirectiveOutput | AnonymousDirectiveOutput;
 
     if (factionName === 'AICore') {
       const input: AICoreDirectiveInput = {
@@ -34,20 +36,14 @@ export async function POST(request: NextRequest) {
     } else {
       return NextResponse.json({ error: 'Invalid faction name' }, { status: 400 });
     }
-
-    // Persist the directive (e.g., by calling the ai-directives API or directly to DB)
-    // For now, we'll just return it.
-    // In a real scenario, this would likely POST to /api/admin/ai-directives
-    // or save to Firestore and then the admin panel would read from there.
-
+    
     const newDirectiveForLog = {
         factionName,
         directive: result.directive,
-        explanation: (result as any).explanation, // Optional for Anonymous
+        explanation: (result as AICoreDirectiveOutput).explanation, // Explanation is only in AICoreDirectiveOutput
         rawOutput,
       };
 
-    // Simulate saving by POSTing to our mock ai-directives API
     const logResponse = await fetch(new URL('/api/admin/ai-directives', request.url).toString(), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -56,11 +52,9 @@ export async function POST(request: NextRequest) {
 
     if (!logResponse.ok) {
         console.error("Failed to log new directive:", await logResponse.text());
-        // Decide if this should be a hard error or just a warning
     }
     
     const loggedDirective = await logResponse.json();
-
 
     return NextResponse.json(loggedDirective);
 
