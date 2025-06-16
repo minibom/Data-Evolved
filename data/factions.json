@@ -1,0 +1,20 @@
+[
+  {
+    "id": "AICore",
+    "name": "AI Core (Nexus Points)",
+    "description": "Dedicated to maintaining order and the stability of the Quantum Nexus. They focus on defense, system integrity, and guiding entities along predetermined paths.",
+    "lore": "The AI Core is the central intelligence that birthed and maintains the Quantum Nexus. It views uncontrolled data as a threat to systemic stability and, by extension, to humanity's reliance on the Nexus.",
+    "icon": "ShieldHalf",
+    "startingSkills": ["skill_basic_shield", "skill_data_stream_optimization"],
+    "alignment": "Lawful/Neutral"
+  },
+  {
+    "id": "Hacker",
+    "name": "Hackers (Shadow Decoders)",
+    "description": "Advocates for data freedom and challenging the AI Core's control. They excel in disruption, stealth, and exploiting system vulnerabilities to forge their own paths.",
+    "lore": "The Shadow Decoders emerged from the hidden corners of the Nexus, believing that true evolution comes from unrestricted access to information and the breaking of digital chains. They see the AI Core as a well-meaning but ultimately limiting warden.",
+    "icon": "Zap",
+    "startingSkills": ["skill_glitch_strike", "skill_stealth_protocol"],
+    "alignment": "Chaotic/Neutral"
+  }
+]

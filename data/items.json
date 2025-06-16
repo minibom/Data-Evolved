@@ -1,0 +1,40 @@
+[
+  {
+    "id": "data_scrap_common",
+    "name": "Common Data Scrap",
+    "description": "A ubiquitous fragment of corrupted data. Essential for basic entity evolution.",
+    "type": "DataScrap",
+    "icon": "Cpu",
+    "stackable": true,
+    "maxStack": 999
+  },
+  {
+    "id": "data_scrap_uncommon",
+    "name": "Uncommon Data Cluster",
+    "description": "A more complex amalgamation of data, offering greater GHZ.",
+    "type": "DataScrap",
+    "icon": "MemoryStick",
+    "stackable": true,
+    "maxStack": 500
+  },
+  {
+    "id": "health_stim_module_mk1",
+    "name": "Health Stim Module Mk1",
+    "description": "A consumable module that restores a small amount of Power (Core HP).",
+    "type": "Consumable",
+    "icon": "HeartPulse",
+    "stackable": true,
+    "maxStack": 20,
+    "effects": [{ "type": "heal_power", "amount": 50 }]
+  },
+  {
+    "id": "basic_laser_emitter",
+    "name": "Basic Laser Emitter",
+    "description": "A rudimentary energy weapon. Standard issue for new Data Entities.",
+    "type": "Equipment",
+    "slot": "weapon",
+    "icon": "SquareActivity",
+    "stackable": false,
+    "statBonuses": { "ghz": 5 }
+  }
+]
