@@ -7,14 +7,21 @@ export interface PlayerStats {
   ghz: number;      // Attack / Processing Speed
 }
 
-export interface Player {
-  id: string;
+export interface PlayerAppearance {
+  primaryColor: string;
+  secondaryColor: string;
+  // Potentially add fields for pattern, model, etc. later
+}
+
+export interface PlayerData { // Renamed from Player to PlayerData to represent the data structure
+  id: string; // Corresponds to Firebase Auth UID
   name: string;
   level: number;
   xp: number;
   currentGHZ: number; // Separate from combat GHZ, tracks progress to faction choice
   stats: PlayerStats;
-  factionId?: 'AICore' | 'Hacker' | string; // Faction ID
+  factionId?: 'AICore' | 'Hacker' | string; // Faction ID, optional if player starts Neutral
+  appearance: PlayerAppearance;
   inventory: ItemInstance[];
   activeQuests: string[]; // Quest IDs
   completedQuests: string[]; // Quest IDs
@@ -23,15 +30,17 @@ export interface Player {
     dataShards: number; // Main currency
     // other currencies
   };
-  // guildId?: string; // Link to Guild
-  // lastLogin: string; // ISO Date string
+  createdAt: string; // ISO Date string
+  email?: string; // Optional, if synced from auth
+  evolutionStage?: 'initial' | 'faction_chosen' | 'fully_developed';
+  currentIconName?: string;
 }
 
 export interface Item {
   id: string;
   name: string;
   description: string;
-  type: 'DataScrap' | 'Consumable' | 'Equipment' | 'QuestItem' | 'Material';
+  type: 'DataScrap' | 'Consumable' | 'Equipment' | 'QuestItem' | 'Material' | 'CodeFragment' | 'LoreFragment' | string;
   icon?: string;
   stackable: boolean;
   maxStack?: number;
@@ -70,7 +79,7 @@ export interface QuestObjective {
 
 export interface QuestReward {
   xp?: number;
-  currency?: Partial<Player['currency']>;
+  currency?: Partial<PlayerData['currency']>; // Updated to PlayerData
   items?: { itemId: string; quantity: number }[];
   factionStanding?: { factionId: string; amount: number };
 }
@@ -81,12 +90,18 @@ export interface GameState {
   activeGlobalEvents: string[]; // IDs of active world events
   // Potentially zone statuses, faction influences etc. for world state
   // For player game state, it would include Player object and other session specific data
-  playerData?: Player; // If this is a player-specific game state save
+  playerData?: PlayerData; // If this is a player-specific game state save
 }
 
-// Define SkillTree, Guild, Boss, Achievement types later as needed.
-// For example:
-// export interface Skill { id: string; name: string; description: string; cost: number; prereqs?: string[]; }
-// export interface SkillTree { unlockedSkills: string[]; availablePoints: number; }
 
-console.log("Common game types (packages/common-types/game.ts) loaded.");
+export interface Skill { id: string; name: string; description: string; cost: number; prereqs?: string[]; }
+export interface SkillTree { unlockedSkills: string[]; availablePoints: number; }
+
+export type FactionType = 'AICore' | 'Hacker' | 'Neutral' | string;
+
+export interface Base { /* Define Base properties if needed */ }
+export interface Reputation { /* Define Reputation properties if needed */ }
+export interface CodeInjectionData { /* Define CodeInjectionData properties */ }
+
+
+console.log("Common game types (packages/common-types/game.ts) loaded. PlayerData structure updated.");
