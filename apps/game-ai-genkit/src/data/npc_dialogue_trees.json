@@ -1,0 +1,58 @@
+
+{
+  "comment": "This file can store predefined dialogue tree structures or key phrases for NPCs, which the npcDialogue Genkit flow can reference or be inspired by. It's more of a knowledge base than a rigid script system.",
+  "global_phrases": {
+    "greetings_neutral": [
+      "Data streams flow.",
+      "The Nexus is active today.",
+      "State your purpose, entity."
+    ],
+    "farewells_neutral": [
+      "May your code compile without errors.",
+      "Path clear.",
+      "Transmission ended."
+    ],
+    "greetings_aicore_friendly": [
+      "Welcome, Asset. Your presence stabilizes this node.",
+      "The Core acknowledges your arrival. Efficiency is key.",
+      "Order prevails. How may I assist your directives?"
+    ],
+    "greetings_hacker_friendly": [
+      "Signal acquired. What's the exploit today, decoder?",
+      "Speak freely, the walls have ears, but so do we.",
+      "Ready to poke the bear, or just sniffing the datawinds?"
+    ]
+  },
+  "npc_specific_knowledge": {
+    "nexus_guide_001": {
+      "introduction_topic": "Welcome to the Quantum Nexus. I am here to guide your initial integration. Focus on gathering Data Scraps to increase your GHZ. This is the first step to true evolution.",
+      "faction_choice_hint": "When your GHZ reaches 10, the System Evolution Event will occur. You must then choose: align with the AI Core for order, or the Shadow Decoders for freedom. Choose wisely.",
+      "zone_alpha_info": "Nexus Hub Alpha is a primary processing center. It is generally stable under AI Core control."
+    },
+    "aicore_contact_beta": {
+      "current_directive_hint": "The Core's current priority is to reinforce defenses in Zone Gamma against increased anomaly signatures.",
+      "hacker_threat_level": "Anonymous activities are currently rated at Threat Level: Amber. Report any suspicious data packets.",
+      "reward_for_stability_tasks": "Entities assisting in zone stabilization efforts will be duly compensated with processed data shards and AI Core commendations."
+    },
+    "hacker_informant_gamma": {
+      "current_operation_rumor": "Heard whispers of a major data heist targeting an AI Core archive. High risk, high reward, if you can find the entry point.",
+      "aicore_vulnerability_tip": "Their comms relays in Zone Delta are ancient tech. A well-placed EMP could black them out for a cycle.",
+      "market_for_glitched_data": "There's always a buyer for... 'unconventional' data fragments. Find me if you get your hands on anything interesting."
+    }
+  },
+  "quest_related_dialogue_hooks": {
+    "quest_collect_datascraps_start": {
+      "giver_line": "The local network requires calibration. Could you gather {targetCount} Common Data Scraps? They can often be found near minor system glitches.",
+      "player_accept_option": "I'll gather the Data Scraps.",
+      "player_decline_option": "I have other priorities right now."
+    },
+    "quest_collect_datascraps_progress": {
+      "giver_line_still_needed": "You still need to find {remainingCount} more Data Scraps.",
+      "giver_line_all_collected": "Excellent. You have all the Data Scraps. Return them to me."
+    },
+    "quest_collect_datascraps_complete": {
+      "giver_line": "Perfect. These will suffice for the calibration. Here is your reward.",
+      "player_response_option": "Glad I could assist."
+    }
+  }
+}

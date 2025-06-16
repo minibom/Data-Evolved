@@ -1,0 +1,49 @@
+
+[
+  {
+    "templateId": "AI_URBAN_RUIN_SMALL",
+    "description": "A compact, ruined urban environment, suitable for early-game skirmishes or as a small outpost. Expect tight corridors and some verticality.",
+    "baseParameters": {
+      "theme": "urban_ruin",
+      "size": { "width": 30, "height": 30 },
+      "numZones": 1,
+      "resourceDensity": "low",
+      "enemyDensity": "medium",
+      "pvpFocus": true,
+      "difficulty": "easy"
+    },
+    "featureSuggestions": ["broken_buildings_cover", "central_plaza_objective", "hidden_loot_cache_rubble"],
+    "tilePaletteHints": ["concrete_cracked", "brick_exposed", "metal_rusted", "road_damaged"]
+  },
+  {
+    "templateId": "AI_DIGITAL_FOREST_MEDIUM",
+    "description": "A medium-sized area resembling a digital forest, with dense clusters of 'data trees' and flowing 'data streams'. Good for ambushes and exploration.",
+    "baseParameters": {
+      "theme": "digital_forest",
+      "size": { "width": 60, "height": 60 },
+      "numZones": 2,
+      "resourceDensity": "medium",
+      "enemyDensity": "medium",
+      "pvpFocus": false,
+      "difficulty": "medium"
+    },
+    "featureSuggestions": ["dense_tree_patches_los_block", "winding_data_stream_obstacle", "hidden_clearing_npc_encounter", "rare_crystal_nodes"],
+    "tilePaletteHints": ["grass_digital_green", "tree_binary_code", "water_data_stream_blue", "path_circuits_glowing"]
+  },
+  {
+    "templateId": "AI_CORRUPTED_CORE_LARGE_BOSS",
+    "description": "A large, dangerous section of a corrupted AI Core, featuring unstable geometry, powerful corrupted entities, and a challenging boss arena.",
+    "baseParameters": {
+      "theme": "nexus_core",
+      "size": { "width": 80, "height": 80 },
+      "numZones": 1,
+      "resourceDensity": "high",
+      "enemyDensity": "horde",
+      "pvpFocus": false,
+      "difficulty": "hard",
+      "requiredFeatures": ["boss_arena_final", "multiple_pathways_to_boss", "environmental_hazards_corruption"]
+    },
+    "featureSuggestions": ["corrupted_data_pools_damage", "flickering_energy_barriers_timed", "elite_guardian_spawns", "lore_terminal_critical_info"],
+    "tilePaletteHints": ["metal_glitched_dark", "energy_conduit_sparking_red", "crystal_corrupted_pulsing", "wall_security_breached"]
+  }
+]

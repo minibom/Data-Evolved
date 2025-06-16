@@ -1,14 +1,21 @@
 
 {
-  "comment": "This file lists all game assets and their paths. Used by AssetManager.",
+  "comment": "This file lists game assets for the AssetManager. Paths are relative to /public/",
   "images": [
-    { "name": "player_sprite_default", "path": "/assets/sprites/player_default.png" },
-    { "name": "aicore_logo", "path": "/assets/images/aicore_logo.png" }
+    { "name": "player_default_sprite", "url": "/assets/images/player_placeholder.png" },
+    { "name": "enemy_drone_sprite", "url": "/assets/images/enemy_drone_placeholder.png" },
+    { "name": "item_datascrap_icon", "url": "/assets/images/datascrap_icon.png" },
+    { "name": "ui_button_default", "url": "/assets/images/ui_button_default.png" }
   ],
   "audio": [
-    { "name": "main_theme", "path": "/assets/audio/main_theme.mp3" }
+    { "name": "sfx_laser_shot", "url": "/assets/audio/sfx_laser.ogg" },
+    { "name": "bgm_nexus_hub", "url": "/assets/audio/bgm_nexus_hub.mp3" }
   ],
-  "tilemaps_json": [
-    { "name": "zone_alpha_static", "path": "/tilemaps/zone_alpha.json" }
+  "tilemaps": [
+    { "name": "zone_alpha_map", "url": "/tilemaps/zone_alpha_placeholder.json" },
+    { "name": "tutorial_area_map", "url": "/tilemaps/tutorial_area_placeholder.json" }
+  ],
+  "fonts": [
+    { "name": "main_game_font", "url": "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" }
   ]
 }

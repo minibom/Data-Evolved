@@ -1,0 +1,44 @@
+
+{
+    "comment": "Placeholder Tiled JSON map data for Zone Alpha",
+    "width": 20,
+    "height": 15,
+    "tilewidth": 32,
+    "tileheight": 32,
+    "layers": [
+        {
+            "name": "GroundLayer",
+            "type": "tilelayer",
+            "data": [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,0,1,1,0,2,2,0,0,0,0,0,0,0,0,0,0,0,2,2,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            "opacity": 1,
+            "visible": true,
+            "x": 0, "y": 0
+        },
+        {
+            "name": "ObjectLayer",
+            "type": "objectgroup",
+            "objects": [
+                {"id":1, "name":"SpawnPointPlayer", "type":"Spawn", "x":64, "y":64, "width":32, "height":32},
+                {"id":2, "name":"NPC_Guide", "type":"NPC", "x":128, "y":128, "width":32, "height":32, "properties": [{"name":"npcId", "type":"string", "value":"nexus_guide_001"}]}
+            ],
+            "opacity": 1,
+            "visible": true,
+            "x": 0, "y": 0
+        }
+    ],
+    "tilesets": [
+        {
+            "firstgid": 1,
+            "image": "../assets/sprites/tileset_placeholder.png", 
+            "imagewidth": 64, "imageheight": 32,
+            "tilewidth": 32, "tileheight": 32,
+            "name": "placeholder_tileset",
+            "columns": 2,
+            "tilecount": 2,
+            "tiles": [
+                {"id":0, "type":"floor"}, 
+                {"id":1, "type":"wall"}  
+            ]
+        }
+    ]
+}

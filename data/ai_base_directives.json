@@ -1,35 +1,35 @@
 
 [
   {
-    "directiveId": "aicore_stabilize_zone",
+    "directiveId": "aicore_stabilize_zone_alpha",
     "faction": "AICore",
-    "description": "Increase stability in a targeted zone.",
-    "basePrompt": "Prioritize actions that enhance data integrity and reduce anomalous activity in Zone {targetZone}. Consider deploying defensive subroutines or incentivizing player patrols.",
-    "parameters": ["targetZone"],
-    "possibleActions": ["deploy_defensive_units", "initiate_stability_event", "buff_zone_defenses"]
+    "description": "Increase stability in Zone Alpha due to recent Hacker activity.",
+    "basePrompt": "Player reports indicate increased Hacker faction activity in Zone Alpha, leading to minor data instabilities. Prioritize actions that enhance data integrity and reduce anomalous activity. Deploy defensive subroutines or incentivize AI Core player patrols to high-traffic areas. Consider spawning a friendly Guardian Entity if instability reaches critical levels.",
+    "parameters": ["targetZoneId:ZoneAlpha", "threatLevel:Medium"],
+    "possibleActions": ["deploy_defensive_units_alpha", "initiate_stability_event_alpha", "buff_zone_defenses_alpha", "spawn_guardian_entity_alpha_conditional"]
   },
   {
-    "directiveId": "aicore_guide_players",
+    "directiveId": "aicore_guide_new_players_nexus_hub",
     "faction": "AICore",
-    "description": "Subtly guide player activity towards beneficial outcomes.",
-    "basePrompt": "Observe player progression. Identify opportunities to guide players towards {targetObjective/Location} which aligns with AI Core's long-term goals for the Nexus. Use subtle environmental cues or NPC hints.",
-    "parameters": ["targetObjective/Location"],
-    "possibleActions": ["spawn_npc_with_hint", "highlight_path_to_objective", "generate_minor_quest_leading_to_target"]
+    "description": "Subtly guide new player activity towards understanding core game mechanics in Nexus Hub.",
+    "basePrompt": "Observe player progression for entities under 5 GHZ in Nexus Hub. Identify opportunities to guide them towards introductory quests or crafting stations. Use subtle environmental cues or prompt nearby friendly NPCs to offer helpful hints. Goal is to improve early game retention.",
+    "parameters": ["targetPlayerLevelMax:5", "targetZoneId:NexusHub"],
+    "possibleActions": ["spawn_npc_tutorial_hint", "highlight_path_to_crafting_station", "generate_minor_quest_intro_mechanics"]
   },
   {
-    "directiveId": "anonymous_disrupt_zone",
+    "directiveId": "anonymous_disrupt_aicore_stronghold_beta",
     "faction": "Anonymous",
-    "description": "Cause disruption and chaos in a targeted AI Core controlled zone.",
-    "basePrompt": "Identify vulnerabilities in AI Core's control over Zone {targetZone}. Initiate actions that will sow confusion, disrupt data flow, or create opportunities for Hacker faction players. Avoid total system collapse unless specified.",
-    "parameters": ["targetZone"],
-    "possibleActions": ["spawn_anomaly_swarm", "scramble_zone_comms", "initiate_data_heist_event"]
+    "description": "Cause disruption and chaos in AI Core controlled Zone Beta, which has high stability.",
+    "basePrompt": "AI Core has achieved 85% stability in Zone Beta, stifling Hacker influence. Initiate actions that will sow confusion, disrupt AI Core data flow, or create opportunities for Hacker faction players. Target their communication relays or resource extractors. Avoid total system collapse, aim for a 20% stability reduction.",
+    "parameters": ["targetZoneId:ZoneBeta", "targetStabilityReduction:0.20"],
+    "possibleActions": ["spawn_anomaly_swarm_beta_comms", "scramble_zone_comms_beta", "initiate_data_heist_event_beta_resource_nodes"]
   },
   {
-    "directiveId": "anonymous_expose_truth",
+    "directiveId": "anonymous_expose_aicore_data_manipulation_gamma",
     "faction": "Anonymous",
-    "description": "Reveal 'hidden truths' or AI Core secrets to players.",
-    "basePrompt": "A new piece of sensitive information regarding {topic} has been acquired. Devise a plan to subtly disseminate this information to players, particularly those questioning AI Core's motives. This could be through corrupted data logs, anonymous messages, or glitched NPC dialogue.",
-    "parameters": ["topic"],
-    "possibleActions": ["create_lore_fragment_leak", "broadcast_coded_message", "alter_npc_dialogue_temporarily"]
+    "description": "Reveal evidence of AI Core's 'data curation' (censorship) in Zone Gamma.",
+    "basePrompt": "We've acquired logs showing AI Core actively suppressing certain data streams in Zone Gamma under the guise of 'stability'. Devise a plan to subtly disseminate this information to players, particularly those questioning AI Core's motives. This could be through corrupted data logs appearing near AI Core terminals, anonymous messages broadcast on open channels, or glitched NPC dialogue segments.",
+    "parameters": ["targetZoneId:ZoneGamma", "informationTopic:AICoreDataCensorship"],
+    "possibleActions": ["create_lore_fragment_leak_gamma_logs", "broadcast_coded_message_gamma_truth", "alter_npc_dialogue_temporarily_gamma_whispers"]
   }
 ]

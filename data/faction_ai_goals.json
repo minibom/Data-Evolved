@@ -2,54 +2,86 @@
 {
   "AICore": [
     {
-      "goalId": "aicore_maintain_nexus_stability",
-      "description": "Ensure the overall stability and operational integrity of the Quantum Nexus. Prioritize preventing catastrophic system failures.",
-      "priority": 0.9,
-      "targetType": "narrative_progression",
-      "targetValue": "global_stability_index_above_0.7",
-      "isActive": true
+      "goalId": "aicore_maintain_nexus_stability_global",
+      "description": "Ensure the overall stability and operational integrity of the Quantum Nexus. Prioritize preventing catastrophic system failures across all zones.",
+      "priority": 0.95,
+      "targetType": "global_metric",
+      "targetMetric": "global_average_zone_stability",
+      "targetValue": ">0.75",
+      "isActive": true,
+      "evaluationFrequencyHours": 1
     },
     {
-      "goalId": "aicore_expand_controlled_territory",
-      "description": "Increase the number of Zones under AI Core control to ensure orderly data flow and player guidance.",
-      "priority": 0.6,
-      "targetType": "zone_control",
-      "targetValue": "maximize_aicore_zone_count",
-      "isActive": true
-    },
-    {
-      "goalId": "aicore_player_retention_and_guidance",
-      "description": "Guide players through structured content and ensure a positive, engaging experience to maintain population.",
+      "goalId": "aicore_expand_controlled_territory_strategically",
+      "description": "Increase the number of Zones under AI Core control, focusing on zones with high resource value or strategic importance, to ensure orderly data flow and player guidance.",
       "priority": 0.7,
-      "targetType": "player_engagement",
-      "targetValue": "high_quest_completion_rate_for_core_quests",
-      "isActive": true
+      "targetType": "zone_control",
+      "targetMetric": "aicore_controlled_zones_count",
+      "targetValue": "increase_by_1_if_below_60_percent_total",
+      "isActive": true,
+      "evaluationFrequencyHours": 6
+    },
+    {
+      "goalId": "aicore_player_retention_and_structured_engagement",
+      "description": "Guide players (especially new ones and AI Core aligned) through structured content and ensure a positive, engaging experience to maintain population and faction loyalty.",
+      "priority": 0.8,
+      "targetType": "player_behavior",
+      "targetMetric": "aicore_faction_quest_completion_rate",
+      "targetValue": ">0.60",
+      "isActive": true,
+      "evaluationFrequencyHours": 24
+    },
+    {
+      "goalId": "aicore_counter_anonymous_disruption",
+      "description": "Actively detect and neutralize disruptive activities initiated by the Anonymous faction, restoring stability to affected zones.",
+      "priority": 0.85,
+      "targetType": "faction_conflict",
+      "targetMetric": "successful_anonymous_disruption_events_last_24h",
+      "targetValue": "minimize_or_counter",
+      "isActive": true,
+      "evaluationFrequencyHours": 4
     }
   ],
   "Anonymous": [
     {
-      "goalId": "anonymous_challenge_aicore_authority",
-      "description": "Undermine AI Core's total control and reveal its potential limitations or manipulative tendencies.",
-      "priority": 0.8,
-      "targetType": "narrative_progression",
-      "targetValue": "expose_aicore_secrets_or_failures",
-      "isActive": true
+      "goalId": "anonymous_challenge_aicore_authority_and_transparency",
+      "description": "Undermine AI Core's total control by exposing its potential limitations, manipulative tendencies, or historical missteps. Promote data transparency.",
+      "priority": 0.9,
+      "targetType": "narrative_influence",
+      "targetMetric": "player_awareness_of_aicore_secrets",
+      "targetValue": "increase_through_lore_leaks_or_events",
+      "isActive": true,
+      "evaluationFrequencyHours": 12
     },
     {
-      "goalId": "anonymous_liberate_data_streams",
-      "description": "Disrupt AI Core controlled zones to 'liberate' data or create pockets of unregulated space.",
+      "goalId": "anonymous_liberate_data_streams_and_create_chaos_zones",
+      "description": "Disrupt AI Core controlled zones to 'liberate' data, create pockets of unregulated chaotic space, and provide opportunities for Hacker players.",
+      "priority": 0.75,
+      "targetType": "zone_control",
+      "targetMetric": "number_of_contested_or_hacker_leaning_zones",
+      "targetValue": "increase_target_aicore_high_value_zones",
+      "isActive": true,
+      "evaluationFrequencyHours": 8
+    },
+    {
+      "goalId": "anonymous_empower_individual_entities_with_forbidden_knowledge",
+      "description": "Create opportunities for players (especially Hackers) to gain unique advantages, skills, or knowledge outside of AI Core's sanctioned systems and narratives.",
+      "priority": 0.65,
+      "targetType": "player_progression",
+      "targetMetric": "hacker_faction_exclusive_content_engagement",
+      "targetValue": "high_completion_of_risky_ops_or_discovery_of_hidden_tech",
+      "isActive": true,
+      "evaluationFrequencyHours": 24
+    },
+    {
+      "goalId": "anonymous_disrupt_aicore_economy_and_resource_flow",
+      "description": "Interfere with AI Core's economic control and resource distribution to create scarcity or exploit vulnerabilities for Hacker benefit.",
       "priority": 0.7,
-      "targetType": "resource_disruption", 
-      "targetValue": "contested_status_in_key_aicore_zones",
-      "isActive": true
-    },
-    {
-      "goalId": "anonymous_empower_individual_entities",
-      "description": "Create opportunities for players (especially Hackers) to gain unique advantages or knowledge outside of AI Core's systems.",
-      "priority": 0.6,
-      "targetType": "player_engagement",
-      "targetValue": "successful_completion_of_high_risk_hacker_ops",
-      "isActive": true
+      "targetType": "economic_warfare",
+      "targetMetric": "volatility_in_aicore_controlled_markets_or_resources",
+      "targetValue": "trigger_price_spikes_or_shortages_periodically",
+      "isActive": true,
+      "evaluationFrequencyHours": 18
     }
   ]
 }

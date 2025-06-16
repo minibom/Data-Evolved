@@ -8,7 +8,7 @@
  */
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { generateNpcDialogue, type NpcDialogueInput, type NpcDialogueOutput } from '@/flows/npcDialogue'; // Ensure this path is correct
+import { generateNpcDialogue, type NpcDialogueInput, type NpcDialogueOutput } from '@game-ai-flows/npcDialogue';
 // import { verifyUser } from '@/lib/auth'; // For player authentication
 // import { updateQuestProgress } from '@/lib/db/firestore'; // Example of a DB interaction
 

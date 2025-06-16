@@ -2,23 +2,35 @@
 [
   {
     "npcId": "nexus_guide_001",
-    "name": "Nexus Guide Unit 734",
-    "type": "informational",
-    "faction": "AICore",
-    "defaultDialogueTreeId": "dt_nexus_guide_intro",
-    "baseStats": { "power": 50, "memory": 100, "firewall": 20, "ghz": 5 },
-    "visualKey": "npc_guide_model_01",
-    "personality": "Helpful, slightly formal, knowledgeable about basic Nexus functions."
+    "name": "Nexus Guide Alpha",
+    "defaultDialogueTreeId": "guide_intro_dialogue",
+    "faction": "Neutral",
+    "visualKey": "npc_guide_model",
+    "initialZone": "zone_tutorial_area",
+    "initialPosition": { "x": 10, "y": 5 },
+    "personality": "Helpful, slightly robotic, informative.",
+    "role": "Provides initial guidance to new Data Entities."
   },
   {
-    "npcId": "shadow_broker_alpha",
-    "name": "Whisper",
-    "type": "merchant_questgiver",
+    "npcId": "aicore_contact_beta",
+    "name": "Coordinator Delta-7",
+    "defaultDialogueTreeId": "aicore_mission_brief_01",
+    "faction": "AICore",
+    "visualKey": "npc_aicore_officer_model",
+    "initialZone": "zone_alpha_nexus_hub",
+    "initialPosition": { "x": 150, "y": 200 },
+    "personality": "Formal, efficient, focused on Nexus stability.",
+    "role": "Gives quests and information for the AI Core faction."
+  },
+  {
+    "npcId": "hacker_informant_gamma",
+    "name": "GlitchStream",
+    "defaultDialogueTreeId": "hacker_intel_drop_01",
     "faction": "Hacker",
-    "defaultDialogueTreeId": "dt_shadow_broker_tasks",
-    "shopInventoryId": "shop_whisper_black_market",
-    "baseStats": { "power": 70, "memory": 150, "firewall": 10, "ghz": 15 },
-    "visualKey": "npc_hacker_stealth_01",
-    "personality": "Cynical, pragmatic, offers high-risk high-reward tasks, speaks in code."
+    "visualKey": "npc_hacker_operative_model",
+    "initialZone": "zone_beta_data_wastes",
+    "initialPosition": { "x": 80, "y": 120 },
+    "personality": "Cynical, witty, values freedom of information.",
+    "role": "Provides intel, quests, and illicit goods for the Hacker faction."
   }
 ]

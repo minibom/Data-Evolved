@@ -17,11 +17,14 @@ export async function GET(request: NextRequest) {
     serverTime: new Date().toISOString(),
     activeWorldEvents: ["data_surge_alpha", "nexus_instability_warning"],
     currentNexusThreatLevel: "Medium", // Example dynamic data
+    maintenanceMode: false,
+    nextScheduledMaintenance: null, // Could be an ISO string
+    motd: "Welcome to the Quantum Nexus, Entity! AI Core and Anonymous factions are currently vying for control of Zone Beta."
   };
   console.log("API: /api/game called (GET) - returning global game info.");
   return NextResponse.json(globalGameInfo);
 }
 
 // Other methods (POST, PUT, DELETE) can be added if needed for specific global game actions.
-// For instance, an admin might POST to trigger a server-wide message.
+// For instance, an admin might POST to trigger a server-wide message through a different, secured admin API.
 // Make sure to implement proper authentication and authorization for such actions.

@@ -1,0 +1,56 @@
+
+{
+  "comment": "This file defines target metrics for the gameBalancer AI flow. These are desired states or ranges for key game parameters.",
+  "global_targets": {
+    "player_retention_7day": {
+      "metric_key": "playerRetentionRate7Day",
+      "target_range": [0.3, 0.45],
+      "description": "Target 30-45% 7-day player retention."
+    },
+    "faction_pvp_balance_aicore_vs_hacker": {
+      "metric_key": "factionWinLossRatioPvP.AICore_vs_Hacker",
+      "target_range": [0.48, 0.52],
+      "description": "Target PvP win rate between AI Core and Hackers to be close to 50/50."
+    },
+    "average_session_length_minutes": {
+      "metric_key": "averagePlayerSessionLengthMinutes",
+      "target_range": [30, 60],
+      "description": "Aim for average player sessions between 30 and 60 minutes."
+    }
+  },
+  "item_balance_targets": [
+    {
+      "item_category": "common_consumables",
+      "metric_key_suffix": "_usageRate",
+      "target_minimum_usage_rate": 0.05,
+      "description": "Ensure common consumables have at least a 5% usage rate among relevant players."
+    },
+    {
+      "item_category": "late_game_weapons_hacker",
+      "metric_key_suffix": "_effectiveness_vs_aicore_elites",
+      "target_value_description": "Should allow skilled Hacker players to effectively combat AI Core elite units.",
+      "description": "Late-game Hacker weapons should be viable against AI Core elites."
+    }
+  ],
+  "enemy_balance_targets": [
+    {
+      "enemy_type_id": "corrupted_drone_mk1",
+      "metric_key_suffix": "_playerSuccessRate_level_1_5",
+      "target_range": [0.7, 0.9],
+      "description": "Players level 1-5 should have a 70-90% success rate against Corrupted Drone Mk1."
+    },
+    {
+      "enemy_type_id": "nexus_guardian_alpha",
+      "metric_key_suffix": "_average_defeat_time_minutes_group_of_3",
+      "target_range": [5, 10],
+      "description": "A group of 3 appropriately leveled players should take 5-10 minutes to defeat Nexus Guardian Alpha."
+    }
+  ],
+  "economy_targets": {
+    "resource_scarcity_energy_crystals": {
+        "metric_key": "economicHealthIndicators.resourceScarcity.energy_crystal_rare",
+        "target_value": "scarce_but_obtainable",
+        "description": "Rare energy crystals should feel valuable and challenging to obtain, but not impossible."
+    }
+  }
+}

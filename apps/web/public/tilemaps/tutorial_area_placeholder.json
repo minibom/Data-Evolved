@@ -1,0 +1,44 @@
+
+{
+    "comment": "Placeholder Tiled JSON map data for Tutorial Area",
+    "width": 15,
+    "height": 10,
+    "tilewidth": 32,
+    "tileheight": 32,
+    "layers": [
+        {
+            "name": "Ground",
+            "type": "tilelayer",
+            "data": [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,2,0,0,0,0,0,0,0,0,0,2,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,1,1,1,1,1,0,0,0,0,0,1,1,0,0,0,1,0,0,0,1,0,0,0,0,0,1,1,0,0,0,1,0,0,0,1,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+            "opacity": 1,
+            "visible": true,
+            "x": 0, "y": 0
+        },
+        {
+            "name": "Objects",
+            "type": "objectgroup",
+            "objects": [
+                {"id":1, "name":"PlayerStart", "type":"Spawn", "x":96, "y":160, "width":32, "height":32},
+                {"id":2, "name":"InfoTerminal", "type":"Interactable", "x":256, "y":96, "width":32, "height":32, "properties": [{"name":"message", "type":"string", "value":"Welcome, Data Entity! Collect Data Scraps to evolve."}]}
+            ],
+            "opacity": 1,
+            "visible": true,
+            "x": 0, "y": 0
+        }
+    ],
+    "tilesets": [
+        {
+            "firstgid": 1,
+            "image": "../assets/sprites/tileset_placeholder_simple.png",
+            "imagewidth": 64, "imageheight": 32,
+            "tilewidth": 32, "tileheight": 32,
+            "name": "simple_tileset",
+            "columns": 2,
+            "tilecount": 2,
+            "tiles": [
+                {"id":0, "type":"floor_basic"},
+                {"id":1, "type":"wall_basic"}
+            ]
+        }
+    ]
+}

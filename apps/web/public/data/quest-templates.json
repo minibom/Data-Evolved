@@ -1,19 +1,12 @@
 
 [
   {
-    "templateId": "collect_generic_public",
-    "titleBase": "Public Data Drive: {ItemNamePlural}",
-    "descriptionBase": "The Nexus Archive requires {Quantity} {ItemNamePlural} for public data integrity. Find them near {SourceLocation}.",
-    "objectiveBase": {
-      "description": "Collect {ItemName} ({CurrentCount}/{TargetCount})",
-      "type": "collect",
-      "targetIdVariable": "ItemId",
-      "targetCountVariable": "Quantity"
-    },
-    "rewardBase": {
-      "xp": 30,
-      "currency": { "dataShards": 10 }
-    },
-    "variables": ["ItemName", "ItemNamePlural", "Quantity", "SourceLocation", "ItemId"]
+    "templateId": "client_tutorial_collect",
+    "title": "Client: Gather First Scraps",
+    "description": "Collect 5 Common Data Scraps from nearby glitches.",
+    "objectives": [
+      { "description": "Collect Common Data Scraps", "type": "collect", "targetId": "data_scrap_common_client", "targetCount": 5 }
+    ],
+    "rewards": { "xp": 10 }
   }
 ]
