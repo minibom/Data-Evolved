@@ -4,7 +4,7 @@ import type { MapGenerationParams, GeneratedMapData } from '@packages/common-typ
 
 interface GenerateMapResponse {
   mapId: string;
-  mapData: GeneratedMapData; // The full map data might be returned directly
+  mapData: GeneratedMapData;
 }
 
 export async function generateNewMap(params: MapGenerationParams): Promise<GenerateMapResponse> {
@@ -18,14 +18,17 @@ export async function generateNewMap(params: MapGenerationParams): Promise<Gener
 export async function loadGeneratedMapData(mapId: string): Promise<GeneratedMapData | null> {
   console.log(`GameClient API: Requesting map data for ID: ${mapId}`);
   try {
-    // The GET endpoint in api/map-generation/route.ts currently returns a placeholder.
-    // This would fetch the actual map data from DB if that was implemented.
-    // For now, this will likely fail or return a placeholder.
-    const response = await apiClient.fetchApi<{ mapData: GeneratedMapData } | { error: string }>(`/map-generation?mapId=${mapId}`);
+    // This API endpoint currently returns a placeholder; it would need to be implemented to fetch from a DB.
+    const response = await apiClient.fetchApi<{ mapData: GeneratedMapData } | { message: string, error?: string }>(`/map-generation?mapId=${mapId}`);
+    
     if ('mapData' in response) {
       return response.mapData;
     }
-    console.warn(`Could not load map data for ${mapId} from API, or map not found. Error:`, (response as {error: string}).error);
+    
+    console.warn(`Could not load map data for ${mapId} from API. Server said: ${(response as {message: string}).message}`);
+    if ((response as {error?: string}).error) {
+        console.warn(`Server error detail: ${(response as {error: string}).error}`);
+    }
     return null;
   } catch (error) {
     console.error(`Error fetching map data for ${mapId}:`, error);
@@ -33,4 +36,4 @@ export async function loadGeneratedMapData(mapId: string): Promise<GeneratedMapD
   }
 }
 
-console.log("Game Client Map API functions (src/game-client/api-client/map.ts) loaded.");
+console.log("Game Client Map API functions (src/game-client/api-client/map.ts) loaded and typed.");
