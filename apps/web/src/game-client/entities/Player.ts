@@ -1,6 +1,6 @@
 // src/game-client/entities/Player.ts
 import { Entity } from './Entity';
-import type { GameClient } from '../index';
+import type { GameClient } from '../core/GameClient'; // Corrected import path
 import type { InputManager } from '../core/InputManager';
 
 // Placeholder types - these should come from @packages/common-types
@@ -23,6 +23,10 @@ export class Player extends Entity {
 
   private speed: number = 200; // Pixels per second
 
+  // Conceptual properties for icon representation based on evolution stage
+  public evolutionStage: 'initial' | 'faction_chosen' | 'fully_developed' = 'initial';
+  public currentIconName: string = 'Code'; // Default icon for initial stage
+
   constructor(game: GameClient, x: number, y: number, data?: PlayerData) {
     super(game, x, y, data?.name || "PlayerEntity", data?.initialStats);
     // Initialize player-specific properties from data if provided
@@ -31,9 +35,11 @@ export class Player extends Entity {
       this.quests = data.quests || [];
       this.skills = data.skills || [];
       this.faction = data.faction || "Neutral";
+      this.evolutionStage = data.evolutionStage || 'initial';
+      this.currentIconName = data.currentIconName || (this.evolutionStage === 'initial' ? 'Code' : 'Bot');
       // GHZ, Power, Memory, Firewall are handled by Entity constructor
     }
-    console.log(`Player entity (ID: ${this.id}, Name: ${this.name}) initialized.`);
+    console.log(`Player entity (ID: ${this.id}, Name: ${this.name}, Icon: ${this.currentIconName}) initialized.`);
   }
 
   public move(dx: number, dy: number): void {
@@ -76,10 +82,10 @@ export class Player extends Entity {
     if (this.sprite) {
       // renderer.drawImage(this.sprite, this.x, this.y, this.width, this.height); // Assuming width/height are set
     } else {
-      renderer.fillStyle = this.faction === 'AICore' ? 'blue' : this.faction === 'Hacker' ? 'purple' : 'green';
+      renderer.fillStyle = this.faction === 'AICore' ? 'hsl(var(--primary))' : this.faction === 'Hacker' ? 'hsl(var(--accent))' : 'green';
       renderer.fillRect(this.x - 16, this.y - 24, 32, 48); // Example size
       renderer.fillStyle = 'white';
-      renderer.font = '10px Arial';
+      renderer.font = '10px Space Grotesk';
       renderer.textAlign = 'center';
       renderer.fillText(this.name.substring(0, 8), this.x, this.y - 30);
       renderer.textAlign = 'left'; // Reset
@@ -111,4 +117,4 @@ export class Player extends Entity {
   }
 }
 
-console.log("Player class (src/game-client/entities/Player.ts) updated.");
+console.log("Player class (apps/web/src/game-client/entities/Player.ts) updated with evolutionStage and currentIconName.");

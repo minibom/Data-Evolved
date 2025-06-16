@@ -1,8 +1,11 @@
-
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -20,18 +23,27 @@
       }
     ],
     "paths": {
-      "@/*": ["./apps/web/src/*"],
-      "@packages/*": ["./packages/*"],
-      "@game-ai-flows/*": ["./apps/game-ai-genkit/src/flows/*"]
+      "@/*": [
+        "./apps/web/src/*"
+      ],
+      "@packages/*": [
+        "./packages/*"
+      ],
+      "@game-ai-flows/*": [
+        "./apps/game-ai-genkit/src/flows/*"
+      ]
     }
   },
   "include": [
-    "next-env.d.ts",
+    "apps/game-ai-genkit/src/**/*.ts",
     "apps/web/**/*.ts",
     "apps/web/**/*.tsx",
     "apps/web/.next/types/**/*.ts",
+    "next-env.d.ts",
     "packages/**/*.ts",
-    "apps/game-ai-genkit/src/**/*.ts"
+    ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }
