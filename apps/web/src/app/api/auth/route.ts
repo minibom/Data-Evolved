@@ -1,8 +1,8 @@
 // @/app/api/auth/route.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-// import { authAdmin } from '@/lib/firebase/admin'; // Assuming Firebase Admin SDK setup in @/lib/firebase/admin.ts
-// import { setDoc } from '@/lib/db/firestore'; // Assuming Firestore helper
+import { setDocument } from '@/lib/db/firestore'; 
+import { requireAuth } from '@/lib/auth/server-auth'; // To ensure only authenticated users can trigger profile creation
 
 export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => null);
@@ -13,46 +13,39 @@ export async function POST(request: NextRequest) {
   
   const { action, uid, email, displayName } = body;
 
-  // This route can now be used for server-side tasks post-authentication,
-  // like creating a user profile in Firestore after Firebase Auth handles the actual user creation.
   if (action === 'create_profile') {
+    let authenticatedUser;
+    try {
+      // This route is called *after* Firebase Auth client-side has created the user.
+      // We re-verify the token here to ensure the request is legitimate.
+      authenticatedUser = await requireAuth(request);
+      if (authenticatedUser.uid !== uid) { // Ensure the token UID matches the UID in body
+        return NextResponse.json({ error: 'UID mismatch or unauthorized profile creation attempt.' }, { status: 403 });
+      }
+    } catch (authError: any) {
+      console.error("API Auth 'create_profile' Auth Error:", authError.message);
+      return NextResponse.json({ error: 'Unauthorized: ' + authError.message }, { status: 401 });
+    }
+    
     if (!uid || !email) {
       return NextResponse.json({ error: 'UID and email are required to create a profile.' }, { status: 400 });
     }
     try {
-      console.log(`API Auth: Creating profile for user ${uid}, email ${email}, name ${displayName || 'N/A'}`);
-      // Placeholder for creating user profile in Firestore
-      // await setDoc('users', uid, { 
-      //   email, 
-      //   displayName: displayName || email, 
-      //   createdAt: new Date().toISOString(), 
-      //   ghz: 0, // Initial GHZ
-      //   // any other default fields
-      // });
-      return NextResponse.json({ message: "User profile creation initiated (mock).", uid }, { status: 201 });
+      const userProfileData = { 
+        email, 
+        displayName: displayName || email.split('@')[0], // Default display name
+        createdAt: new Date().toISOString(), 
+        // Initialize other game-specific fields here
+        // e.g., currentGHZ: 0, level: 1, stats: { ...defaultStats }
+      };
+      await setDocument('userProfiles', uid, userProfileData); // Use 'userProfiles' or similar collection name
+      console.log(`API Auth: User profile document created/updated in Firestore for UID ${uid}.`);
+      return NextResponse.json({ message: "User profile creation/update successful.", uid }, { status: 201 });
     } catch (error: any) {
-      console.error("API Auth Create Profile Error:", error);
-      return NextResponse.json({ error: error.message || 'Failed to create user profile.' }, { status: 500 });
+      console.error("API Auth Create Profile (Firestore) Error:", error);
+      return NextResponse.json({ error: error.message || 'Failed to create/update user profile in Firestore.' }, { status: 500 });
     }
   }
 
-  // Other server-side auth-related actions could be added here,
-  // e.g., custom token minting, session revocation for admin.
-
   return NextResponse.json({ error: 'Invalid action specified for /api/auth POST.' }, { status: 400 });
 }
-
-// GET could be used for custom server-side session status check if not relying solely on client Firebase SDK state
-// export async function GET(request: NextRequest) {
-//   // For example, verify a custom session cookie and return user data
-//   // const sessionCookie = request.cookies.get('__session')?.value;
-//   // if (sessionCookie) {
-//   //   try {
-//   //     const decodedClaims = await authAdmin.verifySessionCookie(sessionCookie, true);
-//   //     return NextResponse.json({ user: decodedClaims });
-//   //   } catch (error) {
-//   //     return NextResponse.json({ user: null, error: 'Invalid session cookie' }, { status: 401 });
-//   //   }
-//   // }
-//   return NextResponse.json({ user: null, message: "No active server session or use client SDK for auth state." });
-// }

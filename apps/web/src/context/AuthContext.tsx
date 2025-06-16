@@ -10,17 +10,19 @@ import {
   signOut as firebaseSignOut,
   updateProfile as firebaseUpdateProfile,
   sendPasswordResetEmail as firebaseSendPasswordResetEmail,
-  type Auth
+  setPersistence,
+  browserLocalPersistence, // Or browserSessionPersistence
+  type Auth asFirebaseAuthType // Renamed to avoid conflict
 } from 'firebase/auth';
-import { auth } from '@/lib/firebaseClient'; // Import your Firebase auth instance
+import { auth as firebaseAuthInstance } from '@/lib/firebaseClient'; // Import your Firebase auth instance
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 
 export interface UserProfile extends User { // Extend Firebase User type
   isAdmin?: boolean; 
-  // Add other custom fields you might store with the user, e.g., factionId, ghz
   factionId?: string;
   ghz?: number;
+  // Add other custom fields from your PlayerData type that you want readily available
 }
 
 interface AuthContextType {
@@ -31,6 +33,7 @@ interface AuthContextType {
   logout: () => Promise<void>;
   register: (email: string, pass: string, displayName: string) => Promise<void>;
   sendPasswordReset: (email: string) => Promise<void>;
+  getFirebaseToken: () => Promise<string | null>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -71,54 +74,91 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const { toast } = useToast();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth as Auth, async (user) => {
-      if (user) {
-        // User is signed in
-        // You can fetch custom claims or user profile data from Firestore here
-        // For isAdmin, this usually comes from custom claims set on the backend
-        // Or you fetch a user profile document from Firestore
-        const tokenResult = await user.getIdTokenResult();
-        const isAdminClaim = !!tokenResult.claims.admin; // Example custom claim
-        
-        setCurrentUser({ 
-          ...user, // Spread all properties from Firebase User object
-          isAdmin: isAdminClaim 
-          // Add other custom fields from your UserProfile type if fetched
-        });
-      } else {
-        // User is signed out
-        setCurrentUser(null);
-      }
-      setLoading(false);
-    });
+    // Set persistence to local (keeps user signed in across browser sessions)
+    // You can change this to browserSessionPersistence for session-only sign-in
+    setPersistence(firebaseAuthInstance as FirebaseAuthType, browserLocalPersistence)
+      .then(() => {
+        const unsubscribe = onAuthStateChanged(firebaseAuthInstance as FirebaseAuthType, async (user) => {
+          if (user) {
+            const tokenResult = await user.getIdTokenResult();
+            const isAdminClaim = !!tokenResult.claims.admin; // Check for 'admin' custom claim
+            
+            // You might fetch additional profile data from Firestore here
+            // For example: const userProfileData = await fetch(`/api/user?userId=${user.uid}`).then(res => res.json());
 
-    return () => unsubscribe();
+            setCurrentUser({ 
+              ...user, 
+              isAdmin: isAdminClaim,
+              // factionId: userProfileData?.factionId, // Example
+              // ghz: userProfileData?.currentGHZ,     // Example
+            });
+          } else {
+            setCurrentUser(null);
+          }
+          setLoading(false);
+        });
+        return () => unsubscribe();
+      })
+      .catch((error) => {
+        console.error("Error setting auth persistence:", error);
+        setLoading(false); // Still need to stop loading if persistence fails
+      });
   }, []);
 
+  const getFirebaseToken = async (): Promise<string | null> => {
+    if (firebaseAuthInstance.currentUser) {
+      return firebaseAuthInstance.currentUser.getIdToken(true); // true to force refresh
+    }
+    return null;
+  };
+
+
   const login = async (email: string, pass: string) => {
-    await signInWithEmailAndPassword(auth as Auth, email, pass);
-    // onAuthStateChanged will handle setting currentUser
+    await signInWithEmailAndPassword(firebaseAuthInstance as FirebaseAuthType, email, pass);
   };
 
   const register = async (email: string, pass: string, displayName: string) => {
-    const userCredential = await createUserWithEmailAndPassword(auth as Auth, email, pass);
+    const userCredential = await createUserWithEmailAndPassword(firebaseAuthInstance as FirebaseAuthType, email, pass);
     if (userCredential.user) {
       await firebaseUpdateProfile(userCredential.user, { displayName });
-      // Update local state or let onAuthStateChanged handle it
-      // This is also a good place to create a user profile document in Firestore
-      // e.g., call an API route: await fetch('/api/user/profile', { method: 'POST', body: JSON.stringify({ uid: userCredential.user.uid, email, displayName }) });
+      
+      // After Firebase user is created, call API to create backend profile
+      // This separates Auth user from your application's user profile data structure.
+      try {
+        const token = await userCredential.user.getIdToken();
+        const profileResponse = await fetch('/api/auth/route', { // This is a bit of a misnomer if it's in route.ts, ensure it's the correct endpoint
+          method: 'POST',
+          headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Send token for server-side validation
+          },
+          body: JSON.stringify({ 
+            action: 'create_profile', 
+            uid: userCredential.user.uid, 
+            email: userCredential.user.email,
+            displayName 
+          }),
+        });
+        if (!profileResponse.ok) {
+          const errorData = await profileResponse.json();
+          console.error("Failed to create backend user profile:", errorData.error);
+          toast({ title: "Profile Creation Issue", description: errorData.error || "Could not sync profile to backend.", variant: "destructive" });
+          // Note: User is still created in Firebase Auth. Decide on handling this.
+        }
+      } catch (profileError) {
+        console.error("Error creating backend user profile:", profileError);
+        toast({ title: "Profile Sync Error", description: "Could not sync profile. Please contact support if issues persist.", variant: "destructive" });
+      }
     }
-    // onAuthStateChanged will handle setting currentUser
   };
 
   const logout = async () => {
-    await firebaseSignOut(auth as Auth);
-    // onAuthStateChanged will handle setting currentUser to null
-    router.push('/auth/login'); // Redirect to login after logout
+    await firebaseSignOut(firebaseAuthInstance as FirebaseAuthType);
+    router.push('/auth/login'); 
   };
 
   const sendPasswordReset = async (email: string) => {
-    await firebaseSendPasswordResetEmail(auth as Auth, email);
+    await firebaseSendPasswordResetEmail(firebaseAuthInstance as FirebaseAuthType, email);
   };
 
   const value = {
@@ -129,6 +169,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     logout,
     register,
     sendPasswordReset,
+    getFirebaseToken,
   };
 
   return (

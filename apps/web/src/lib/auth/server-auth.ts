@@ -6,15 +6,15 @@
  * sent from the client.
  */
 
-// import { authAdmin } from '../firebase'; // Firebase Admin SDK
+import { authAdmin } from '../firebase'; // Firebase Admin SDK
 import type { NextRequest } from 'next/server';
-// import type { DecodedIdToken } from 'firebase-admin/auth';
+import type { DecodedIdToken } from 'firebase-admin/auth';
 
 interface AuthenticatedUser {
   uid: string;
   email?: string;
-  name?: string;
-  isAdmin?: boolean;
+  name?: string; // displayName from token
+  isAdmin?: boolean; // From custom claims
   // Add other relevant user properties from the decoded token or your user profile DB
 }
 
@@ -24,36 +24,32 @@ interface AuthenticatedUser {
  * @returns A promise that resolves to an AuthenticatedUser object if verification is successful, otherwise null.
  */
 export async function verifyFirebaseToken(request: NextRequest): Promise<AuthenticatedUser | null> {
+  if (!authAdmin) {
+    console.warn("ServerAuth: Firebase Admin SDK not initialized. Cannot verify token.");
+    // In a strict environment, you might throw an error or return a more definitive auth failure.
+    // For development, returning null allows other parts of the app to proceed with mock/unauthed state.
+    return null; 
+  }
+
   const authorization = request.headers.get('Authorization');
   if (authorization?.startsWith('Bearer ')) {
     const idToken = authorization.split('Bearer ')[1];
     try {
       console.log("ServerAuth: Verifying Firebase ID token...");
-      // const decodedToken: DecodedIdToken = await authAdmin.verifyIdToken(idToken);
-      // Mock decoded token for now
-      const mockDecodedToken = {
-        uid: "mock-decoded-uid",
-        email: "mock-user@example.com",
-        name: "Mock User From Token",
-        admin: Math.random() < 0.1 // 10% chance of being admin for testing
-      };
-      
-      // You might fetch additional user profile data from Firestore here using decodedToken.uid
-      // to supplement the token claims (e.g., custom roles not in token).
-      
-      console.log("ServerAuth: Token verified for UID:", mockDecodedToken.uid);
+      const decodedToken: DecodedIdToken = await authAdmin.verifyIdToken(idToken);
+      console.log("ServerAuth: Token verified for UID:", decodedToken.uid);
       return {
-        uid: mockDecodedToken.uid,
-        email: mockDecodedToken.email,
-        name: mockDecodedToken.name,
-        isAdmin: !!mockDecodedToken.admin, // Ensure boolean
+        uid: decodedToken.uid,
+        email: decodedToken.email,
+        name: decodedToken.name, // displayName from token
+        isAdmin: !!decodedToken.admin, // Custom claim for admin role
       };
-    } catch (error) {
-      console.error('ServerAuth: Error verifying Firebase ID token:', error);
+    } catch (error: any) {
+      console.error('ServerAuth: Error verifying Firebase ID token:', error.code, error.message);
       return null;
     }
   }
-  console.log("ServerAuth: No Firebase ID token found in Authorization header.");
+  // console.log("ServerAuth: No Firebase ID token found in Authorization header.");
   return null;
 }
 
@@ -61,14 +57,13 @@ export async function verifyFirebaseToken(request: NextRequest): Promise<Authent
  * Middleware-like function to protect API routes by requiring authentication.
  * Can be used at the beginning of API route handlers.
  * @param request The NextRequest object.
- * @returns The AuthenticatedUser if valid, otherwise throws an error or returns a specific response.
+ * @returns The AuthenticatedUser if valid.
+ * @throws Error if authentication fails, which should be caught by the API route to return a 401/403.
  */
 export async function requireAuth(request: NextRequest): Promise<AuthenticatedUser> {
   const user = await verifyFirebaseToken(request);
   if (!user) {
-    // In a real app, you'd return a NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    // For now, throwing an error might be simpler for some API route structures.
-    throw new Error('AuthenticationRequired: User is not authenticated.');
+    throw new Error('AuthenticationRequired: User is not authenticated or token is invalid.');
   }
   return user;
 }
@@ -76,12 +71,12 @@ export async function requireAuth(request: NextRequest): Promise<AuthenticatedUs
 /**
  * Middleware-like function to protect API routes by requiring admin privileges.
  * @param request The NextRequest object.
- * @returns The AuthenticatedUser if valid and an admin, otherwise throws or returns error response.
+ * @returns The AuthenticatedUser if valid and an admin.
+ * @throws Error if authentication fails or user is not an admin.
  */
 export async function requireAdminAuth(request: NextRequest): Promise<AuthenticatedUser> {
   const user = await requireAuth(request); // First, ensure they are authenticated
   if (!user.isAdmin) {
-    // Return NextResponse.json({ error: 'Forbidden: Admin access required' }, { status: 403 });
     throw new Error('AuthorizationError: User is not an administrator.');
   }
   return user;

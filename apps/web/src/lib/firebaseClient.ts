@@ -1,9 +1,9 @@
 // src/lib/firebaseClient.ts (Firebase JS SDK)
 // This file is for client-side Firebase JS SDK initialization.
 import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
-import { getAuth, browserLocalPersistence, browserSessionPersistence, setPersistence } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-import { getStorage } from 'firebase/storage'; // If using Firebase Storage
+import { getAuth, type Auth } from 'firebase/auth'; // No longer need persistence types here, managed in AuthContext
+import { getFirestore, type Firestore } from 'firebase/firestore';
+import { getStorage, type FirebaseStorage } from 'firebase/storage'; // If using Firebase Storage
 // import { getAnalytics } from "firebase/analytics"; // If using Firebase Analytics
 
 const firebaseConfig = {
@@ -17,33 +17,31 @@ const firebaseConfig = {
 };
 
 let app: FirebaseApp;
+let auth: Auth;
+let db: Firestore;
+let storage: FirebaseStorage;
+// let analytics; // Define if used
 
 if (!getApps().length) {
-  app = initializeApp(firebaseConfig);
-  console.log("Firebase JS SDK initialized successfully.");
+  try {
+    app = initializeApp(firebaseConfig);
+    auth = getAuth(app);
+    db = getFirestore(app);
+    storage = getStorage(app);
+    // analytics = typeof window !== 'undefined' ? getAnalytics(app) : undefined;
+    console.log("Firebase JS SDK initialized successfully.");
+  } catch (error) {
+    console.error("Firebase JS SDK initialization error:", error);
+    // Fallback or re-throw if Firebase is critical for the app to function
+    // For now, we'll let it be, but auth, db, storage will be undefined
+  }
 } else {
   app = getApp();
+  auth = getAuth(app);
+  db = getFirestore(app);
+  storage = getStorage(app);
+  // analytics = typeof window !== 'undefined' ? getAnalytics(app) : undefined;
   console.log("Firebase JS SDK already initialized.");
 }
 
-export const auth = getAuth(app);
-export const db = getFirestore(app);
-export const storage = getStorage(app);
-// export const analytics = typeof window !== 'undefined' ? getAnalytics(app) : undefined;
-
-
-// Configure auth persistence
-// Default is 'local' (persists across browser sessions)
-// Use 'session' for persistence only during the current session
-// Use 'none' for no persistence (in-memory only)
-// Example of setting to session persistence:
-// setPersistence(auth, browserSessionPersistence)
-//   .then(() => {
-//     console.log("Firebase Auth persistence set to session.");
-//   })
-//   .catch((error) => {
-//     console.error("Error setting Firebase Auth persistence:", error);
-//   });
-
-
-export { app };
+export { app, auth, db, storage /*, analytics */ };

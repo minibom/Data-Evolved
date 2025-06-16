@@ -1,65 +1,59 @@
 // src/app/api/admin/zones/route.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-// import { verifyAdmin } from '@/lib/auth/server-auth';
-// import { getAllZonesFromDB, updateZoneInDB } from '@/lib/db/firestore'; // Example DB functions
-// import type { ZoneStateDoc } from '@packages/common-types/db';
+import { requireAdminAuth } from '@/lib/auth/server-auth';
+import { getCollection, updateDocument, getDocument } from '@/lib/db/firestore'; // Using Firestore utilities
+import type { ZoneStateDoc } from '@packages/common-types/db';
 
-// Mock zone states (in real app, from Firestore)
-let adminMockZoneStates: Record<string, any> = {
-  "zone_alpha_nexus_hub": { 
-    zoneId: "zone_alpha_nexus_hub", 
-    name: "Nexus Hub Alpha (Admin View)", 
-    controllingFactionId: "AICore", 
-    status: "stable", 
-    synchronizationPoints: { "AICore": 1000, "Hacker": 200 },
-    stabilityIndex: 0.9, // Example admin-visible metric
-    playerCount: 25,    // Example admin-visible metric
-    activeEvents: [],
-    upgrades: { "data_conduit_mk1": 1 }
-  },
-  "zone_beta_data_stream": { 
-    zoneId: "zone_beta_data_stream", 
-    name: "Beta Data Stream (Admin View)", 
-    controllingFactionId: null, 
-    status: "contested",
-    synchronizationPoints: { "AICore": 500, "Hacker": 550 },
-    stabilityIndex: 0.5,
-    playerCount: 12,
-    activeEvents: ["minor_anomaly_surge"],
-    upgrades: {}
-  },
-};
+const ZONES_COLLECTION = 'zones'; // Firestore collection for zone states
 
 export async function GET(request: NextRequest) {
-  // const isAdmin = await verifyAdmin(request);
-  // if (!isAdmin) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+  try {
+    await requireAdminAuth(request);
+  } catch (authError: any) {
+    return NextResponse.json({ error: authError.message }, { status: 401 });
+  }
   
-  // const zones = await getAllZonesFromDB();
-  console.log("Admin API: Fetching all zone states for admin panel.");
-  return NextResponse.json(Object.values(adminMockZoneStates));
+  console.log("Admin API: Fetching all zone states from Firestore for admin panel.");
+  try {
+    const zones = await getCollection<ZoneStateDoc>(ZONES_COLLECTION);
+    return NextResponse.json(zones);
+  } catch (dbError: any) {
+    console.error("Admin API: Error fetching zones from Firestore:", dbError);
+    return NextResponse.json({ error: 'Failed to fetch zone states.', details: dbError.message }, { status: 500 });
+  }
 }
 
 export async function POST(request: NextRequest) { // For updating a specific zone
-  // const isAdmin = await verifyAdmin(request);
-  // if (!isAdmin) return NextResponse.json({ error: 'Unauthorized' }, { status: 403 });
+  let adminUser;
+  try {
+    adminUser = await requireAdminAuth(request);
+  } catch (authError: any) {
+    return NextResponse.json({ error: authError.message }, { status: 401 });
+  }
 
   try {
-    const { zoneId, updates } = await request.json() as { zoneId: string, updates: Partial<any> /* ZoneStateDoc */ };
+    const { zoneId, updates } = await request.json() as { zoneId: string, updates: Partial<ZoneStateDoc> };
     if (!zoneId || !updates) {
-      return NextResponse.json({ error: 'Zone ID and updates are required.' }, { status: 400 });
+      return NextResponse.json({ error: 'Zone ID and updates object are required.' }, { status: 400 });
     }
     
-    if (!adminMockZoneStates[zoneId]) {
+    const existingZone = await getDocument<ZoneStateDoc>(ZONES_COLLECTION, zoneId);
+    if (!existingZone) {
       return NextResponse.json({ error: 'Zone not found.' }, { status: 404 });
     }
 
-    // Apply updates (in real app, validate updates carefully)
-    adminMockZoneStates[zoneId] = { ...adminMockZoneStates[zoneId], ...updates, lastAdminUpdate: new Date().toISOString() };
-    // await updateZoneInDB(zoneId, updates);
+    const updatesWithLog = { 
+      ...updates, 
+      lastAdminUpdate: new Date().toISOString(), 
+      lastAdminUpdateBy: adminUser.email || adminUser.uid 
+    };
     
-    console.log(`Admin API: Zone ${zoneId} updated by admin. New state:`, adminMockZoneStates[zoneId]);
-    return NextResponse.json({ message: `Zone ${zoneId} updated successfully.`, zone: adminMockZoneStates[zoneId] });
+    await updateDocument(ZONES_COLLECTION, zoneId, updatesWithLog);
+    
+    const updatedZone = { ...existingZone, ...updatesWithLog };
+    console.log(`Admin API: Zone ${zoneId} updated by admin ${adminUser.email}. New state fragment:`, updatesWithLog);
+    return NextResponse.json({ message: `Zone ${zoneId} updated successfully.`, zone: updatedZone });
 
   } catch (error: any) {
     console.error("Admin API: Error updating zone:", error);
