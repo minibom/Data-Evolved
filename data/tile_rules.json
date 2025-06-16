@@ -1,0 +1,71 @@
+
+{
+  "comment": "This file defines rules for tile adjacency and placement. It's conceptual and would be used by the map generation AI.",
+  "tileTypes": {
+    "floor_grass": {
+      "allowAdjacent": ["floor_grass", "path_dirt", "tree_data", "water_stream_shallow", "wall_wood_simple"],
+      "properties": { "walkable": true, "terrainType": "natural" }
+    },
+    "path_dirt": {
+      "allowAdjacent": ["floor_grass", "path_dirt", "rubble_piles"],
+      "properties": { "walkable": true, "terrainType": "path" }
+    },
+    "tree_data": {
+      "allowAdjacent": ["floor_grass", "tree_data"],
+      "properties": { "walkable": false, "providesCover": true, "resourceYield": "data_scrap_common_low" }
+    },
+    "water_stream_shallow": {
+      "allowAdjacent": ["floor_grass", "water_stream_shallow", "bridge_simple"],
+      "properties": { "walkable": false, "movementPenalty": 0.5, "visualEffect": "flowing_water" }
+    },
+    "wall_wood_simple": {
+      "allowAdjacent": ["floor_grass", "wall_wood_simple", "door_wood"],
+      "properties": { "walkable": false, "blocksLOS": true }
+    },
+    "floor_concrete_broken": {
+      "allowAdjacent": ["floor_concrete_broken", "road_asphalt_cracked", "wall_brick_damaged", "rubble_piles", "metal_debris"],
+      "properties": { "walkable": true, "terrainType": "urban_ruin" }
+    },
+    "road_asphalt_cracked": {
+      "allowAdjacent": ["floor_concrete_broken", "road_asphalt_cracked"],
+      "properties": { "walkable": true, "terrainType": "road" }
+    },
+    "wall_brick_damaged": {
+      "allowAdjacent": ["floor_concrete_broken", "wall_brick_damaged", "door_metal_damaged"],
+      "properties": { "walkable": false, "blocksLOS": true, "breakable": true }
+    },
+    "rubble_piles": {
+      "allowAdjacent": ["floor_concrete_broken", "path_dirt", "rubble_piles"],
+      "properties": { "walkable": true, "providesLowCover": true }
+    },
+    "floor_metallic_glitched": {
+        "allowAdjacent": ["floor_metallic_glitched", "wall_energy_shield_flickering", "data_conduit_broken", "corrupted_crystal_growth"],
+        "properties": { "walkable": true, "terrainType": "nexus_core_corrupted", "hazardChance": 0.1 }
+    },
+    "wall_energy_shield_flickering": {
+        "allowAdjacent": ["floor_metallic_glitched", "wall_energy_shield_flickering"],
+        "properties": { "walkable": false, "blocksLOS": false, "intermittentBlocking": true, "damageOnTouch": "low_energy" }
+    },
+    "data_conduit_broken": {
+        "allowAdjacent": ["floor_metallic_glitched"],
+        "properties": { "walkable": true, "providesLowCover": true, "hazardSource": "energy_leak" }
+    }
+  },
+  "globalRules": [
+    {
+      "ruleName": "NoIsolatedWalkableAreas",
+      "description": "All walkable areas must be connected to at least one map entry point.",
+      "appliesTo": "all_themes"
+    },
+    {
+      "ruleName": "ResourceProximity",
+      "description": "High-value resources should not be clustered too closely without some form of challenge or hazard nearby.",
+      "appliesTo": ["medium_difficulty", "hard_difficulty"]
+    },
+    {
+        "ruleName": "DoorPlacement",
+        "description": "Doors must be placed in wall segments and have walkable tiles on at least one side.",
+        "appliesTo": "all_themes"
+    }
+  ]
+}

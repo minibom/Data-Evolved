@@ -5,6 +5,7 @@
 // export * from './TilemapRenderer';
 // export * from './CollisionManager';
 // export * from './ZoneManager';
+// export * from './ProceduralMapLoader'; // Added ProceduralMapLoader
 
 console.log("Game Client World module (src/game-client/world/index.ts) loaded.");
 

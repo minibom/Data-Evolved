@@ -1,0 +1,79 @@
+
+[
+  {
+    "templateName": "Standard Digital Forest Outpost",
+    "description": "A small, defensible outpost surrounded by a moderately dense digital forest, suitable for early game exploration or a minor faction presence.",
+    "baseParams": {
+      "size": { "width": 40, "height": 40 },
+      "theme": "digital_forest",
+      "numZones": 1,
+      "resourceDensity": "medium",
+      "enemyDensity": "low",
+      "pvpFocus": false,
+      "difficulty": "easy",
+      "requiredFeatures": ["central_structure", "perimeter_trees"]
+    },
+    "tilePalette": ["floor_grass", "tree_data", "wall_wood_simple", "path_dirt", "water_stream_shallow"],
+    "entitySpawnPool": [
+      { "type": "resource_node_datascrap_common", "weight": 10 },
+      { "type": "enemy_spawn_glitch_critter_weak", "weight": 5 },
+      { "type": "npc_info_terminal_basic", "weight": 1 }
+    ],
+    "generationHints": [
+      "Ensure the central structure is accessible.",
+      "Scatter resource nodes primarily within the forest areas.",
+      "Place a few enemy spawns guarding paths to the structure."
+    ]
+  },
+  {
+    "templateName": "Contested Urban Ruin Chokepoint",
+    "description": "A war-torn urban sector with clear chokepoints, designed for intense PvP encounters and resource denial.",
+    "baseParams": {
+      "size": { "width": 60, "height": 60 },
+      "theme": "urban_ruin",
+      "numZones": 2,
+      "resourceDensity": "low",
+      "enemyDensity": "medium",
+      "pvpFocus": true,
+      "difficulty": "medium",
+      "requiredFeatures": ["central_objective_capture_point", "defensive_barricades"]
+    },
+    "tilePalette": ["floor_concrete_broken", "wall_brick_damaged", "rubble_piles", "road_asphalt_cracked", "metal_debris"],
+    "entitySpawnPool": [
+      { "type": "resource_node_weapon_parts", "weight": 3 },
+      { "type": "enemy_spawn_corrupted_drone_patrol", "weight": 8 },
+      { "type": "faction_control_point_neutral", "weight": 1 }
+    ],
+    "generationHints": [
+      "Design at least two major chokepoints leading to the central objective.",
+      "Place cover and barricades strategically for firefights.",
+      "Ensure both zones have some resource scarcity to encourage conflict."
+    ]
+  },
+  {
+    "templateName": "Corrupted Nexus Core Fragment",
+    "description": "A highly dangerous and unstable fragment of the Nexus Core, filled with powerful corrupted entities and rare data.",
+    "baseParams": {
+      "size": { "width": 80, "height": 80 },
+      "theme": "nexus_core", 
+      "numZones": 1,
+      "resourceDensity": "high",
+      "enemyDensity": "horde",
+      "pvpFocus": false,
+      "difficulty": "hard",
+      "requiredFeatures": ["boss_arena_corrupted_guardian", "unique_lore_terminal"]
+    },
+    "tilePalette": ["floor_metallic_glitched", "wall_energy_shield_flickering", "data_conduit_broken", "corrupted_crystal_growth"],
+    "entitySpawnPool": [
+      { "type": "resource_node_datascrap_rare", "weight": 10 },
+      { "type": "resource_node_ancient_code_fragment", "weight": 2 },
+      { "type": "enemy_spawn_nexus_guardian_corrupted", "weight": 10 },
+      { "type": "enemy_spawn_data_wraith_elite", "weight": 7 }
+    ],
+    "generationHints": [
+      "The boss arena should be a distinct, challenging area.",
+      "Create winding paths with frequent enemy encounters.",
+      "Hide lore terminals in difficult-to-reach spots."
+    ]
+  }
+]

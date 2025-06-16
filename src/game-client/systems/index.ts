@@ -16,6 +16,7 @@
 // export * from './FactionSystem';
 // export * from './ZoneControlSystem';
 // export * from './PvpSystem';
+// export * from './MapGenerationSystem'; // Added MapGenerationSystem
 
 console.log("Game Client Systems module (src/game-client/systems/index.ts) loaded.");
 

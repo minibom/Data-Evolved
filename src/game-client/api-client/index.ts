@@ -12,6 +12,7 @@ import * as craftingApi from './crafting';
 import * as factionApi from './faction';
 import * as zoneApi from './zone';
 import * as pvpApi from './pvp';
+import * as mapApi from './map'; // Added map API client
 // import * as inventoryApi from './inventory';
 // import * as questApi from './quest';
 // import * as achievementApi from './achievements';
@@ -54,6 +55,7 @@ export const apiClient = {
   ...factionApi,
   ...zoneApi,
   ...pvpApi,
+  ...mapApi, // Added map API functions
   // ... other exported API modules
   fetchApi, // Expose the raw fetcher if needed
 };
