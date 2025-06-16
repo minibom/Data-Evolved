@@ -1,7 +1,7 @@
 // src/game-client/systems/PathfindingSystem.ts
 import { BaseSystem } from './BaseSystem';
 import type { GameClient } from '../index';
-// Define TileMap and Point types, ideally from @packages/common-types
+// Define TileMap and Point types, ideally from @packages/common-types or local world types
 // For now, using local simple interfaces
 interface Point { x: number; y: number; }
 interface TileMap { 
