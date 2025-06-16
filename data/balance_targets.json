@@ -1,0 +1,50 @@
+
+{
+  "comment": "This file defines target metrics or states that the GameBalancer AI might try to achieve. These are conceptual goals.",
+  "globalTargets": [
+    {
+      "targetId": "player_engagement_session_time",
+      "metric": "averageSessionLengthMinutes",
+      "desiredRange": [25, 45],
+      "description": "Aim for average player sessions between 25 and 45 minutes to ensure engagement without burnout."
+    },
+    {
+      "targetId": "faction_balance_pvp_winrate",
+      "metric": "factionPvpWinRate.AICore_vs_Hacker",
+      "desiredRange": [0.45, 0.55],
+      "description": "PvP win rate between AI Core and Hackers should ideally be close to 50/50."
+    },
+    {
+      "targetId": "item_viability_common_tier",
+      "metric": "usageRate.commonItems",
+      "desiredMinimum": 0.10,
+      "description": "At least 10% of item usage should involve common-tier items to ensure they remain relevant."
+    }
+  ],
+  "factionSpecificTargets": {
+    "AICore": [
+      {
+        "targetId": "aicore_zone_control_stability",
+        "metric": "averageStability.AICoreControlledZones",
+        "desiredMinimum": 0.75,
+        "description": "AI Core controlled zones should maintain an average stability of 75% or higher."
+      }
+    ],
+    "Hacker": [
+      {
+        "targetId": "hacker_resource_disruption_success",
+        "metric": "successfulDisruptionEvents.Hacker",
+        "desiredFrequencyPerCycle": 2,
+        "description": "Hackers should successfully execute at least 2 minor resource disruption events per game cycle."
+      }
+    ]
+  },
+  "economyTargets": [
+    {
+      "targetId": "currency_sink_effectiveness",
+      "metric": "currencySinkRatio",
+      "desiredRange": [0.2, 0.4],
+      "description": "Ratio of currency removed from game vs. currency generated should be between 20-40%."
+    }
+  ]
+}

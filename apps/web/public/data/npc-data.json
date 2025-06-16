@@ -1,0 +1,24 @@
+
+[
+  {
+    "npcId": "nexus_guide_001",
+    "name": "Nexus Guide Unit 734",
+    "type": "informational",
+    "faction": "AICore",
+    "defaultDialogueTreeId": "dt_nexus_guide_intro",
+    "baseStats": { "power": 50, "memory": 100, "firewall": 20, "ghz": 5 },
+    "visualKey": "npc_guide_model_01",
+    "personality": "Helpful, slightly formal, knowledgeable about basic Nexus functions."
+  },
+  {
+    "npcId": "shadow_broker_alpha",
+    "name": "Whisper",
+    "type": "merchant_questgiver",
+    "faction": "Hacker",
+    "defaultDialogueTreeId": "dt_shadow_broker_tasks",
+    "shopInventoryId": "shop_whisper_black_market",
+    "baseStats": { "power": 70, "memory": 150, "firewall": 10, "ghz": 15 },
+    "visualKey": "npc_hacker_stealth_01",
+    "personality": "Cynical, pragmatic, offers high-risk high-reward tasks, speaks in code."
+  }
+]

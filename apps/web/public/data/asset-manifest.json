@@ -1,0 +1,14 @@
+
+{
+  "comment": "This file lists all game assets and their paths. Used by AssetManager.",
+  "images": [
+    { "name": "player_sprite_default", "path": "/assets/sprites/player_default.png" },
+    { "name": "aicore_logo", "path": "/assets/images/aicore_logo.png" }
+  ],
+  "audio": [
+    { "name": "main_theme", "path": "/assets/audio/main_theme.mp3" }
+  ],
+  "tilemaps_json": [
+    { "name": "zone_alpha_static", "path": "/tilemaps/zone_alpha.json" }
+  ]
+}

@@ -1,0 +1,81 @@
+
+[
+  {
+    "templateId": "MT_URBAN_SMALL_PVE",
+    "name": "Small Urban PvE Outpost",
+    "description": "A compact, ruined urban area suitable for early-game PvE encounters and resource gathering. Features a few defensible structures.",
+    "defaultParams": {
+      "theme": "urban_ruin",
+      "size": { "width": 30, "height": 30 },
+      "numZones": 1,
+      "resourceDensity": "medium",
+      "enemyDensity": "low",
+      "pvpFocus": false,
+      "difficulty": "easy",
+      "requiredFeatures": ["central_structure_small", "chokepoint_entrance"]
+    },
+    "tilePalettePreference": ["floor_concrete_broken", "wall_brick_damaged", "rubble_piles", "road_asphalt_cracked"],
+    "entitySpawnSuggestions": [
+      { "type": "resource_node_datascrap_common", "densityWeight": 0.7 },
+      { "type": "enemy_spawn_corrupted_drone_weak", "densityWeight": 0.3, "groupSize": [1, 3] },
+      { "type": "npc_info_terminal_basic", "densityWeight": 0.1, "fixedLocation": "central_structure_small" }
+    ],
+    "generationHints": [
+      "Ensure the central structure has at least two entry points.",
+      "Place resource nodes in relatively safe, but not trivial, locations.",
+      "Enemy patrols should cover main pathways but allow for stealthy approaches."
+    ]
+  },
+  {
+    "templateId": "MT_FOREST_MEDIUM_PVP",
+    "name": "Medium Digital Forest PvP Arena",
+    "description": "A moderately sized digital forest with clearings and dense patches, designed for tactical PvP engagements around a central objective.",
+    "defaultParams": {
+      "theme": "digital_forest",
+      "size": { "width": 60, "height": 60 },
+      "numZones": 1, 
+      "resourceDensity": "low",
+      "enemyDensity": "medium",
+      "pvpFocus": true,
+      "difficulty": "medium",
+      "requiredFeatures": ["central_capture_point", "multiple_pathways", "vision_blockers_natural"]
+    },
+    "tilePalettePreference": ["floor_grass_digital", "tree_data_tall", "data_stream_shallow", "path_ overgrown_circuits"],
+    "entitySpawnSuggestions": [
+      { "type": "resource_node_energy_cell", "densityWeight": 0.2, "locations": "edges" },
+      { "type": "enemy_spawn_data_wraith_patrol", "densityWeight": 0.4, "groupSize": [2, 4], "patrolRoutes": "perimeter" },
+      { "type": "buff_shrine_temporary_speed", "densityWeight": 0.1, "locations": "contested_areas" }
+    ],
+    "generationHints": [
+      "The central capture point should be visible from multiple approaches but have defensible spots.",
+      "Create a mix of open clearings for ranged combat and dense tree lines for cover and ambushes.",
+      "Data streams can act as natural obstacles or slow-down zones."
+    ]
+  },
+  {
+    "templateId": "MT_CORRUPTED_LARGE_BOSS",
+    "name": "Large Corrupted Wasteland - Boss Lair",
+    "description": "A sprawling, hazardous wasteland culminating in a protected lair for a powerful boss entity. High risk, high reward.",
+    "defaultParams": {
+      "theme": "corrupted_wasteland",
+      "size": { "width": 100, "height": 100 },
+      "numZones": 2,
+      "resourceDensity": "high", 
+      "enemyDensity": "horde",
+      "pvpFocus": false,
+      "difficulty": "hard",
+      "requiredFeatures": ["boss_arena_secluded", "environmental_hazards_corruption", "unique_lore_fragment_location"]
+    },
+    "tilePalettePreference": ["floor_cracked_corrupted", "wall_bio_digital_pulsating", "toxic_data_pool", "shattered_nexus_relics"],
+    "entitySpawnSuggestions": [
+      { "type": "resource_node_rare_crystal_pure", "densityWeight": 0.5, "locations": "guarded_areas" },
+      { "type": "enemy_spawn_corrupted_behemoth_elite", "densityWeight": 0.8, "groupSize": [1, 2], "locations": "chokepoints_to_boss" },
+      { "type": "boss_spawn_nexus_devourer_prime", "densityWeight": 1.0, "fixedLocation": "boss_arena_secluded" }
+    ],
+    "generationHints": [
+      "The path to the boss arena should be challenging, with increasing enemy difficulty and environmental hazards.",
+      "Incorporate hidden areas or optional paths that may contain lore fragments or rare resources.",
+      "The boss arena itself should have interesting terrain features for the encounter."
+    ]
+  }
+]
