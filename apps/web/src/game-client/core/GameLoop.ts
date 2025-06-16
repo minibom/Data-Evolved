@@ -1,12 +1,12 @@
 // src/game-client/core/GameLoop.ts
 
-type UpdateCallback = (deltaTime: number) => void;
+type UpdateCallback = (deltaTimeMs: number) => void; // deltaTime in milliseconds
 type RenderCallback = () => void;
 
 export class GameLoop {
   private lastTime: number = 0;
   private accumulatedTime: number = 0;
-  private timeStep: number = 1000 / 60; // Target 60 FPS
+  private timeStep: number = 1000 / 60; // Target 60 FPS, so timeStep is approx 16.67ms
   private animationFrameId: number | null = null;
   private isRunning: boolean = false;
 
@@ -16,18 +16,24 @@ export class GameLoop {
   constructor(updateFn: UpdateCallback, renderFn: RenderCallback) {
     this.updateFn = updateFn;
     this.renderFn = renderFn;
-    console.log("GameLoop initialized.");
+    console.log(`GameLoop initialized with timeStep: ${this.timeStep.toFixed(2)}ms.`);
   }
 
   private loop(currentTime: number): void {
     if (!this.isRunning) return;
 
-    const deltaTime = currentTime - this.lastTime;
+    let deltaTime = currentTime - this.lastTime;
     this.lastTime = currentTime;
+
+    // Cap delta time to prevent spiral of death if tab is inactive for too long
+    if (deltaTime > 1000) { // Max 1 second jump
+        deltaTime = 1000;
+    }
+
     this.accumulatedTime += deltaTime;
 
     // Fixed time step updates for physics and game logic
-    // Pass deltaTime in milliseconds to updateFn as per diagram (delta implies time change)
+    // Pass the fixed timeStep (in ms) to updateFn
     while (this.accumulatedTime >= this.timeStep) {
       this.updateFn(this.timeStep); 
       this.accumulatedTime -= this.timeStep;
@@ -57,19 +63,12 @@ export class GameLoop {
     console.log("GameLoop stopped.");
   }
 
-  // Methods to match UML diagram (already covered by constructor and loop logic)
-  public update(delta: number): void {
-    // This method in UML might represent the internal update call,
-    // which is handled by `this.updateFn(delta)` in the loop.
-    // If it's meant to be an external way to force an update, its usage would differ.
-    // For now, assuming it's covered by the internal loop.
-    this.updateFn(delta);
+  // These methods are for external calls if ever needed, but the loop itself uses updateFn and renderFn
+  public update(deltaMs: number): void {
+    this.updateFn(deltaMs);
   }
 
   public render(): void {
-    // Similar to update, this is covered by `this.renderFn()` in the loop.
     this.renderFn();
   }
 }
-
-console.log("GameLoop class (src/game-client/core/GameLoop.ts) updated.");

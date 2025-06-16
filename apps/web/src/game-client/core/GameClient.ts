@@ -6,8 +6,7 @@
  * It provides a central point of access to these components for other parts of the game.
  */
 import { GameLoop } from './GameLoop';
-import { AssetManager } //, type AssetManifest 
-    from './AssetManager';
+import { AssetManager } from './AssetManager';
 import { InputManager } from './InputManager';
 import { EventManager } from './EventManager';
 import { ApiClient } from '../api-client';
@@ -16,7 +15,7 @@ import { ProceduralMapLoader } from '../world/ProceduralMapLoader';
 import { ZoneManager } from '../world/ZoneManager';
 import type { BaseScene } from '../scenes/BaseScene';
 import { MainMenuScene } from '../scenes/MainMenuScene';
-// import { GamePlayScene } from '../scenes/GamePlayScene'; // Example scene
+import { GamePlayScene } from '../scenes/GamePlayScene';
 
 // Import all systems
 import { BaseSystem } from '../systems/BaseSystem';
@@ -39,13 +38,6 @@ import { FactionSystem } from '../systems/FactionSystem';
 import { GuildSystem } from '../systems/GuildSystem';
 import { AchievementSystem } from '../systems/AchievementSystem';
 import { BossRaidSystem } from '../systems/BossRaidSystem';
-// ... import other systems
-
-// UI Elements that might be managed or accessed via GameClient
-// import { HealthBar } from '../ui/HealthBar';
-// import { DialogueRenderer } from '../ui/DialogueRenderer'; // Canvas based
-// import { GameMessageOverlay } from '../ui/GameMessageOverlay';
-// import { GhzMeter } from '../ui/GhzMeter';
 
 
 export class GameClient {
@@ -57,49 +49,38 @@ export class GameClient {
   public apiClient: ApiClient;
   public mapManager: MapManager;
   public proceduralMapLoader: ProceduralMapLoader;
-  public zoneManager: ZoneManager; // Manages zone data and transitions
+  public zoneManager: ZoneManager;
 
-  private systems: Map<string, BaseSystem> = new Map(); // Stores instances of game systems
+  private systems: Map<string, BaseSystem> = new Map();
   public currentScene: BaseScene | null = null;
 
   constructor(canvas: HTMLCanvasElement) {
     this.canvas = canvas;
     console.log("GameClient initializing with canvas:", canvas);
 
-    // Initialize core managers
     this.assetManager = new AssetManager();
-    this.inputManager = new InputManager(this.canvas); // Input manager needs a target
+    this.inputManager = new InputManager(this.canvas);
     this.eventManager = new EventManager();
-    this.apiClient = new ApiClient(this); // Pass GameClient instance for potential shared access
-
-    // Initialize world and map related managers
+    this.apiClient = new ApiClient(this);
     this.mapManager = new MapManager(this);
     this.proceduralMapLoader = new ProceduralMapLoader(this);
     this.zoneManager = new ZoneManager(this);
-
-    // Initialize the game loop with update and render methods of this GameClient
     this.gameLoop = new GameLoop(this.update.bind(this), this.render.bind(this));
 
     this.registerSystems();
 
-    // Initial canvas setup (placeholder)
     const ctx = this.canvas.getContext('2d');
     if (ctx) {
-      ctx.fillStyle = 'hsl(var(--secondary))';
+      ctx.fillStyle = 'hsl(var(--background))'; // Use theme background
       ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-      ctx.fillStyle = 'hsl(var(--secondary-foreground))';
-      ctx.font = '20px Space Grotesk';
+      ctx.fillStyle = 'hsl(var(--foreground))'; // Use theme foreground
+      ctx.font = '16px Space Grotesk';
       ctx.textAlign = 'center';
-      ctx.fillText('GameClient Initialized - Systems Registered', this.canvas.width / 2, this.canvas.height / 2);
+      ctx.fillText('GameClient Initialized, Awaiting Scene...', this.canvas.width / 2, this.canvas.height / 2);
     }
   }
 
-  /**
-   * Registers all game systems.
-   * Systems are responsible for specific game logic domains (combat, quests, etc.).
-   */
   private registerSystems(): void {
-    // Instantiate and store each system
     this.systems.set(CombatSystem.name, new CombatSystem(this));
     this.systems.set(InventorySystem.name, new InventorySystem(this));
     this.systems.set(QuestSystem.name, new QuestSystem(this));
@@ -119,107 +100,58 @@ export class GameClient {
     this.systems.set(GuildSystem.name, new GuildSystem(this));
     this.systems.set(AchievementSystem.name, new AchievementSystem(this));
     this.systems.set(BossRaidSystem.name, new BossRaidSystem(this));
-
     console.log("All game systems registered with GameClient.");
   }
 
-  /**
-   * Initializes core components and the first scene.
-   * Called after GameClient construction.
-   */
   public init(): void {
     console.log("GameClient: Initializing core components, systems, and loading initial scene...");
-    this.inputManager.init(); // Setup event listeners
-    
-    // Initialize all registered systems
+    this.inputManager.init();
     this.systems.forEach(system => system.init());
-    
-    // Load initial assets (e.g., for main menu or common UI)
-    // await this.assetManager.loadAssets({ /* common assets manifest */ });
-
-    // Load the initial scene (e.g., MainMenuScene)
-    this.loadScene(new MainMenuScene(this)); // MainMenuScene should handle its own asset preloading
+    // Load GamePlayScene directly for now to get into the action
+    this.loadScene(new GamePlayScene(this));
   }
 
-  /**
-   * Starts the main game loop.
-   * Should be called after `init()` and potentially after initial assets are loaded.
-   */
-  public async startGameLoop(): Promise<void> {
+  public startGameLoop(): void {
     console.log("GameClient: Starting main game loop.");
     this.gameLoop.start();
   }
 
-  /**
-   * Stops the main game loop.
-   */
   public stopGameLoop(): void {
     this.gameLoop.stop();
     console.log("GameClient: Game loop stopped.");
   }
 
-  /**
-   * Loads and transitions to a new scene.
-   * @param scene The scene instance to load.
-   */
   public loadScene(scene: BaseScene): void {
     if (this.currentScene) {
-      this.currentScene.destroy(); // Clean up the old scene
+      this.currentScene.destroy();
     }
     this.currentScene = scene;
-    this.currentScene.init(); // Initialize the new scene (which should handle its preloading and creation)
+    // Scene.init() now handles preload and create
+    this.currentScene.init();
     console.log(`GameClient: Scene loaded - ${scene.constructor.name}`);
   }
 
-  /**
-   * Main update method called by the GameLoop.
-   * @param deltaTime Time elapsed since the last update, in milliseconds.
-   */
-  private update(deltaTime: number): void {
-    this.inputManager.update(); // Update input states first
-
-    // Update the current scene
+  private update(deltaTime: number): void { // deltaTime is in ms
+    this.inputManager.update();
     if (this.currentScene) {
       this.currentScene.update(deltaTime);
     }
-
-    // Update all registered game systems
-    this.systems.forEach(system => system.update(deltaTime));
+    // Systems are updated if they are designed to be updated by the scene or GameClient
+    // For now, let's assume scenes manage their relevant systems' updates
   }
 
-  /**
-   * Main render method called by the GameLoop.
-   */
   private render(): void {
     const ctx = this.canvas.getContext('2d');
     if (!ctx) return;
 
-    // Clear the canvas (or the main viewport of the rendering engine)
-    ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    // Example: Fill background if needed, though scenes might handle this
-    // ctx.fillStyle = "hsl(var(--background))";
-    // ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    ctx.fillStyle = 'hsl(var(--background))'; // Use theme background
+    ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-
-    // Render the current scene
     if (this.currentScene) {
-      this.currentScene.render(ctx); // Pass the rendering context
+      this.currentScene.render(ctx);
     }
-
-    // Systems might also render debug info or overlays (optional)
-    // this.systems.forEach(system => {
-    //   if (typeof (system as any).render === 'function') {
-    //     (system as any).render(ctx);
-    //   }
-    // });
   }
 
-  /**
-   * Retrieves a registered game system instance.
-   * @param SystemClass The class of the system to retrieve.
-   * @returns The instance of the system.
-   * @throws Error if the system is not registered.
-   */
   public getSystem<T extends BaseSystem>(SystemClass: new (...args: any[]) => T): T {
     const system = this.systems.get(SystemClass.name) as T;
     if (!system) {
@@ -228,7 +160,6 @@ export class GameClient {
     return system;
   }
 
-  // Getters for core managers
   public getAssetManager(): AssetManager { return this.assetManager; }
   public getInputManager(): InputManager { return this.inputManager; }
   public getEventManager(): EventManager { return this.eventManager; }
@@ -238,16 +169,3 @@ export class GameClient {
   public getZoneManager(): ZoneManager { return this.zoneManager; }
   public getCanvas(): HTMLCanvasElement { return this.canvas; }
 }
-
-// This function would be called from the React component (e.g., src/app/game/page.tsx)
-// to create and initialize the game instance.
-export function initializeGame(canvasElement: HTMLCanvasElement): GameClient {
-  const gameClientInstance = new GameClient(canvasElement);
-  gameClientInstance.init(); // Initialize systems and load initial scene
-  // The game loop might be started by a UI element (e.g., "Start Game" button in MainMenuScene)
-  // or automatically if transitioning directly to gameplay.
-  // gameClientInstance.startGameLoop();
-  return gameClientInstance;
-}
-
-console.log("GameClient class (src/game-client/core/GameClient.ts) loaded and updated.");
