@@ -1,46 +1,58 @@
 // @/app/api/auth/route.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-// import { authAdmin } from '@/lib/firebase/admin'; // Assuming Firebase Admin SDK setup
-// import { setDoc } from '@/lib/db/firestore'; // Assuming Firestore helper for creating user profiles
+// import { authAdmin } from '@/lib/firebase/admin'; // Assuming Firebase Admin SDK setup in @/lib/firebase/admin.ts
+// import { setDoc } from '@/lib/db/firestore'; // Assuming Firestore helper
 
 export async function POST(request: NextRequest) {
-  const { action, email, password, displayName } = await request.json();
+  const body = await request.json().catch(() => null);
 
-  if (action === 'register') {
-    if (!email || !password || !displayName) {
-      return NextResponse.json({ error: 'Email, password, and display name are required for registration.' }, { status: 400 });
+  if (!body || !body.action) {
+    return NextResponse.json({ error: 'Action not specified or invalid request body.' }, { status: 400 });
+  }
+  
+  const { action, uid, email, displayName } = body;
+
+  // This route can now be used for server-side tasks post-authentication,
+  // like creating a user profile in Firestore after Firebase Auth handles the actual user creation.
+  if (action === 'create_profile') {
+    if (!uid || !email) {
+      return NextResponse.json({ error: 'UID and email are required to create a profile.' }, { status: 400 });
     }
     try {
-      console.log(`API Auth: Registering user ${email} with name ${displayName}`);
-      // const userRecord = await authAdmin.createUser({ email, password, displayName });
-      // Placeholder: Create user profile in Firestore
-      // await setDoc('users', userRecord.uid, { email, displayName, createdAt: new Date().toISOString(), ghz: 0 /* initial GHZ */ });
-      // return NextResponse.json({ uid: userRecord.uid, email: userRecord.email }, { status: 201 });
-      return NextResponse.json({ uid: `mock_uid_${Date.now()}`, email, message: "Registration successful (mock)." }, { status: 201 });
+      console.log(`API Auth: Creating profile for user ${uid}, email ${email}, name ${displayName || 'N/A'}`);
+      // Placeholder for creating user profile in Firestore
+      // await setDoc('users', uid, { 
+      //   email, 
+      //   displayName: displayName || email, 
+      //   createdAt: new Date().toISOString(), 
+      //   ghz: 0, // Initial GHZ
+      //   // any other default fields
+      // });
+      return NextResponse.json({ message: "User profile creation initiated (mock).", uid }, { status: 201 });
     } catch (error: any) {
-      console.error("API Auth Register Error:", error);
-      return NextResponse.json({ error: error.message || 'Failed to register user.' }, { status: 500 });
-    }
-  } else if (action === 'login') {
-    if (!email || !password) {
-      return NextResponse.json({ error: 'Email and password are required for login.' }, { status: 400 });
-    }
-    try {
-      console.log(`API Auth: Logging in user ${email}`);
-      // This is where server-side session creation or custom token generation would happen
-      // For Firebase, client usually handles login and sends ID token to backend for verification/session.
-      // This endpoint could be used for custom auth or to mint a session cookie after Firebase client login.
-      // For now, just a placeholder response:
-      return NextResponse.json({ message: 'Login successful (mock - session/token not implemented here)', user: { email } });
-    } catch (error: any) {
-      console.error("API Auth Login Error:", error);
-      return NextResponse.json({ error: error.message || 'Failed to login.' }, { status: 401 });
+      console.error("API Auth Create Profile Error:", error);
+      return NextResponse.json({ error: error.message || 'Failed to create user profile.' }, { status: 500 });
     }
   }
 
-  return NextResponse.json({ error: 'Invalid action provided.' }, { status: 400 });
+  // Other server-side auth-related actions could be added here,
+  // e.g., custom token minting, session revocation for admin.
+
+  return NextResponse.json({ error: 'Invalid action specified for /api/auth POST.' }, { status: 400 });
 }
 
-// GET could be used for session status check if using server-managed sessions
-// export async function GET(request: NextRequest) { ... }
+// GET could be used for custom server-side session status check if not relying solely on client Firebase SDK state
+// export async function GET(request: NextRequest) {
+//   // For example, verify a custom session cookie and return user data
+//   // const sessionCookie = request.cookies.get('__session')?.value;
+//   // if (sessionCookie) {
+//   //   try {
+//   //     const decodedClaims = await authAdmin.verifySessionCookie(sessionCookie, true);
+//   //     return NextResponse.json({ user: decodedClaims });
+//   //   } catch (error) {
+//   //     return NextResponse.json({ user: null, error: 'Invalid session cookie' }, { status: 401 });
+//   //   }
+//   // }
+//   return NextResponse.json({ user: null, message: "No active server session or use client SDK for auth state." });
+// }

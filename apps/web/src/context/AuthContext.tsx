@@ -2,23 +2,35 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-// import { User, onAuthStateChanged } from 'firebase/auth'; // Uncomment when Firebase is integrated
-// import { auth } from '@/lib/firebaseClient'; // Uncomment when Firebase is integrated
+import { 
+  User, 
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut as firebaseSignOut,
+  updateProfile as firebaseUpdateProfile,
+  sendPasswordResetEmail as firebaseSendPasswordResetEmail,
+  type Auth
+} from 'firebase/auth';
+import { auth } from '@/lib/firebaseClient'; // Import your Firebase auth instance
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
 
-interface UserProfile {
-  uid: string;
-  email: string | null;
-  displayName: string | null;
-  isAdmin?: boolean; // Add admin role
+export interface UserProfile extends User { // Extend Firebase User type
+  isAdmin?: boolean; 
+  // Add other custom fields you might store with the user, e.g., factionId, ghz
+  factionId?: string;
+  ghz?: number;
 }
 
 interface AuthContextType {
   currentUser: UserProfile | null;
   loading: boolean;
-  isAdmin: boolean; // Convenience getter for admin status
-  // login: (/* credentials */) => Promise<void>; // Placeholder
-  // logout: () => Promise<void>; // Placeholder
-  // register: (/* credentials */) => Promise<void>; // Placeholder
+  isAdmin: boolean;
+  login: (email: string, pass: string) => Promise<void>;
+  logout: () => Promise<void>;
+  register: (email: string, pass: string, displayName: string) => Promise<void>;
+  sendPasswordReset: (email: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,7 +47,6 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-// Simple Loader2 icon (can be replaced with a more elaborate loading screen)
 const Loader2 = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -53,64 +64,81 @@ const Loader2 = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-
 export function AuthProvider({ children }: AuthProviderProps) {
   const [currentUser, setCurrentUser] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const router = useRouter();
+  const { toast } = useToast();
 
   useEffect(() => {
-    // Placeholder: Simulate auth state loading and set a mock user
-    const timer = setTimeout(() => {
-      // To test admin views, you can set a mock admin user:
-      // setCurrentUser({ uid: 'mock-admin-uid', email: 'admin@example.com', displayName: 'Admin User', isAdmin: true });
-      // To test regular user views:
-      setCurrentUser({ uid: 'mock-user-uid', email: 'user@example.com', displayName: 'Mock User', isAdmin: false });
-      // To test unauthenticated views:
-      // setCurrentUser(null); 
+    const unsubscribe = onAuthStateChanged(auth as Auth, async (user) => {
+      if (user) {
+        // User is signed in
+        // You can fetch custom claims or user profile data from Firestore here
+        // For isAdmin, this usually comes from custom claims set on the backend
+        // Or you fetch a user profile document from Firestore
+        const tokenResult = await user.getIdTokenResult();
+        const isAdminClaim = !!tokenResult.claims.admin; // Example custom claim
+        
+        setCurrentUser({ 
+          ...user, // Spread all properties from Firebase User object
+          isAdmin: isAdminClaim 
+          // Add other custom fields from your UserProfile type if fetched
+        });
+      } else {
+        // User is signed out
+        setCurrentUser(null);
+      }
       setLoading(false);
-    }, 1000);
+    });
 
-    // Real Firebase integration:
-    // const unsubscribe = onAuthStateChanged(auth, async (user) => {
-    //   if (user) {
-    //     // Here you might fetch additional user profile data, including roles
-    //     // For example, check a 'roles' collection in Firestore or a custom claim
-    //     const tokenResult = await user.getIdTokenResult();
-    //     const isAdmin = !!tokenResult.claims.admin; // Example: admin custom claim
-    //     setCurrentUser({ 
-    //       uid: user.uid, 
-    //       email: user.email, 
-    //       displayName: user.displayName,
-    //       isAdmin 
-    //     });
-    //   } else {
-    //     setCurrentUser(null);
-    //   }
-    //   setLoading(false);
-    // });
-    // return () => unsubscribe();
-     return () => clearTimeout(timer);
+    return () => unsubscribe();
   }, []);
+
+  const login = async (email: string, pass: string) => {
+    await signInWithEmailAndPassword(auth as Auth, email, pass);
+    // onAuthStateChanged will handle setting currentUser
+  };
+
+  const register = async (email: string, pass: string, displayName: string) => {
+    const userCredential = await createUserWithEmailAndPassword(auth as Auth, email, pass);
+    if (userCredential.user) {
+      await firebaseUpdateProfile(userCredential.user, { displayName });
+      // Update local state or let onAuthStateChanged handle it
+      // This is also a good place to create a user profile document in Firestore
+      // e.g., call an API route: await fetch('/api/user/profile', { method: 'POST', body: JSON.stringify({ uid: userCredential.user.uid, email, displayName }) });
+    }
+    // onAuthStateChanged will handle setting currentUser
+  };
+
+  const logout = async () => {
+    await firebaseSignOut(auth as Auth);
+    // onAuthStateChanged will handle setting currentUser to null
+    router.push('/auth/login'); // Redirect to login after logout
+  };
+
+  const sendPasswordReset = async (email: string) => {
+    await firebaseSendPasswordResetEmail(auth as Auth, email);
+  };
 
   const value = {
     currentUser,
     loading,
-    isAdmin: !!currentUser?.isAdmin, // Check if user is admin
-    // Implement login, logout, register functions here
+    isAdmin: !!currentUser?.isAdmin,
+    login,
+    logout,
+    register,
+    sendPasswordReset,
   };
 
   return (
     <AuthContext.Provider value={value}>
       {!loading && children}
-      {/* You can show a global loader here while auth state is resolving */}
       {loading && (
         <div className="fixed inset-0 flex items-center justify-center bg-background z-[9999]">
-          {/* Replace with your actual global loader component if you have one */}
           <Loader2 className="h-12 w-12 animate-spin text-primary" />
         </div>
       )}
     </AuthContext.Provider>
   );
 }
-
-    
