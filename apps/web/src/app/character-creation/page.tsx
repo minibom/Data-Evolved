@@ -3,7 +3,7 @@
 
 // import CharacterCustomizationUI from '@/components/CharacterCustomizationUI'; // Placeholder for actual UI component
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -14,34 +14,44 @@ import { useState } from 'react';
 export default function CharacterCreationPage() {
   const router = useRouter();
   const [entityName, setEntityName] = useState("DataEntity_" + Math.floor(Math.random()*10000));
-  const [selectedFaction, setSelectedFaction] = useState<string | undefined>(undefined);
-  const [primaryColor, setPrimaryColor] = useState("#7DF9FF"); // Electric Blue
-  const [secondaryColor, setSecondaryColor] = useState("#D070FF"); // Cyber Purple
+  const [selectedFaction, setSelectedFaction] = useState<string | undefined>(undefined); // Store faction ID
+  const [primaryColor, setPrimaryColor] = useState("#7DF9FF"); // Electric Blue from theme
+  const [secondaryColor, setSecondaryColor] = useState("#D070FF"); // Cyber Purple from theme
   const [isLoading, setIsLoading] = useState(false);
   // In a real app, you'd fetch available factions from data/factions.json or an API
   const factions = [
     { id: "AICore", name: "AI Core (Nexus Points)" },
     { id: "Hacker", name: "Hackers (Shadow Decoders)" },
+    // { id: "Neutral", name: "Neutral / Undecided" } // Neutral isn't a selectable starting faction, but a state
   ];
 
   const handleCharacterCreate = async () => {
     setIsLoading(true);
-    console.log("Creating character:", { entityName, selectedFaction, primaryColor, secondaryColor });
-    // Placeholder for API call to POST /api/game/character
-    // const response = await fetch('/api/game/character', {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({ name: entityName, factionId: selectedFaction, appearance: { primaryColor, secondaryColor } }),
-    // });
-    // if (response.ok) {
-    //   router.push('/game'); // Redirect to game or dashboard
-    // } else {
-    //   // Handle error
-    //   console.error("Failed to create character");
-    // }
-    await new Promise(resolve => setTimeout(resolve, 1500)); // Simulate API call
-    setIsLoading(false);
-    router.push('/game'); // Simulate success
+    console.log("Creating character:", { entityName, factionId: selectedFaction, appearance: { primaryColor, secondaryColor } });
+    
+    try {
+      const response = await fetch('/api/game/character', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: entityName, factionId: selectedFaction, appearance: { primaryColor, secondaryColor } }),
+      });
+
+      if (response.ok) {
+        // const data = await response.json();
+        // console.log("Character created successfully:", data.character);
+        // this.game.playerManager.setPlayerData(data.character) // Store player data in a client-side manager
+        router.push('/game'); // Redirect to game or dashboard
+      } else {
+        const errorData = await response.json();
+        console.error("Failed to create character:", errorData.error);
+        // TODO: Show error toast to user
+      }
+    } catch (error) {
+      console.error("Network or unexpected error during character creation:", error);
+      // TODO: Show error toast to user
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
