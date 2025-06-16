@@ -2,19 +2,20 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Settings, ListChecks, Users, CalendarClock, BarChart3, Bot } from "lucide-react";
+import { Home, Settings, Users, CalendarClock, BarChart3, Bot, ListChecks } from "lucide-react"; // Added ListChecks for AI Supervision
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const adminNavItems = [
   { href: "/admin", label: "Admin Dashboard", icon: Home },
-  { href: "/admin/ai-supervision", label: "AI Supervision", icon: Bot },
+  { href: "/admin/ai-supervision", label: "AI Supervision", icon: Bot }, // Changed icon to Bot
   { href: "/admin/ai-settings", label: "AI Settings", icon: Settings },
   { href: "/admin/users", label: "User Management", icon: Users },
   { href: "/admin/events", label: "Event Management", icon: CalendarClock },
   { href: "/admin/zones", label: "Zone Management", icon: BarChart3 },
   // Add more admin links here as per the project structure
+  // Example: { href: "/admin/logs", label: "System Logs", icon: FileText }, 
 ];
 
 export function AdminSidebar() {

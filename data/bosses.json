@@ -1,0 +1,25 @@
+
+[
+  {
+    "id": "glitchzilla_nexus_devourer",
+    "name": "Glitchzilla, Nexus Devourer",
+    "description": "A colossal entity born from a cascade of critical system errors, Glitchzilla consumes raw data to fuel its chaotic existence, threatening to unravel entire zones of the Quantum Nexus.",
+    "lore": "Legends say Glitchzilla was once a core maintenance program, twisted by an unknown anomaly into a being of pure digital destruction.",
+    "baseStats": { "power": 1000000, "memory": 500000, "firewall": 200, "ghz": 1500 },
+    "abilities": [
+      { "id": "data_slam", "name": "Data Slam", "description": "Slams the area with corrupted data, dealing AoE damage.", "cooldown": 15, "abilityType": "aoe" },
+      { "id": "corruption_aura", "name": "Corruption Aura", "description": "Continuously damages nearby entities and reduces their Firewall.", "cooldown": 0, "abilityType": "aoe" },
+      { "id": "nexus_pulse", "name": "Nexus Pulse", "description": "Unleashes a powerful pulse that disrupts entity functions, potentially silencing skills.", "cooldown": 30, "castTime": 2, "abilityType": "aoe" }
+    ],
+    "phases": [
+      { "phaseNumber": 2, "healthThreshold": 0.50, "name": "Enraged Phase", "newAbilities": [{ "id": "fragmented_spawn", "name": "Fragmented Spawn", "description": "Summons smaller Data Anomalies to attack.", "cooldown": 45, "abilityType": "summon" }] }
+    ],
+    "lootTable": [
+      { "itemId": "data_scrap_uncommon", "chance": 1.0, "quantityMin": 20, "quantityMax": 50 },
+      { "itemId": "corrupted_core_fragment", "chance": 0.8, "quantityMin": 1, "quantityMax": 3 },
+      { "itemId": "glitchzilla_scale_trophy", "chance": 0.1, "quantityMin": 1, "quantityMax": 1, "isUnique": true }
+    ],
+    "spawnConditions": "Triggers during a 'Critical System Meltdown' world event.",
+    "respawnTimeMinutes": 10080 
+  }
+]

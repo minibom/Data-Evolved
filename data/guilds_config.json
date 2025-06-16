@@ -1,0 +1,19 @@
+
+{
+  "defaultMaxMembers": 10,
+  "creationCost": {
+    "dataShards": 1000
+  },
+  "ranks": [
+    { "level": 0, "name": "Initiate", "permissions": ["chat", "view_bank"] },
+    { "level": 1, "name": "Member", "permissions": ["chat", "view_bank", "deposit_bank"] },
+    { "level": 2, "name": "Veteran", "permissions": ["chat", "view_bank", "deposit_bank", "invite_member"] },
+    { "level": 3, "name": "Officer", "permissions": ["chat", "view_bank", "deposit_bank", "invite_member", "kick_member", "edit_motd"] },
+    { "level": 4, "name": "Leader", "permissions": ["all"] }
+  ],
+  "levelUpgrades": [
+    { "level": 1, "xpRequired": 0, "maxMembers": 10, "unlocks": ["Guild Chat"] },
+    { "level": 2, "xpRequired": 10000, "maxMembers": 15, "unlocks": ["Guild Bank Tier 1"] },
+    { "level": 3, "xpRequired": 50000, "maxMembers": 20, "unlocks": ["Guild Buff Slot 1"] }
+  ]
+}

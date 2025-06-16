@@ -1,0 +1,60 @@
+
+[
+  {
+    "id": "first_login",
+    "name": "Nexus Genesis",
+    "description": "Successfully connected to the Quantum Nexus for the first time.",
+    "category": "Milestone",
+    "points": 10,
+    "icon": "LogIn"
+  },
+  {
+    "id": "collect_100_common_scraps",
+    "name": "Data Scavenger",
+    "description": "Collected 100 Common Data Scraps.",
+    "category": "Collection",
+    "points": 20,
+    "rewards": [{ "type": "currency", "id": "dataShards", "amount": 50 }],
+    "icon": "Archive"
+  },
+  {
+    "id": "reach_10_ghz",
+    "name": "System Evolution",
+    "description": "Reached 10 GHZ and faced the choice of allegiance.",
+    "category": "Progression",
+    "points": 50,
+    "icon": "GitFork"
+  },
+  {
+    "id": "join_aicore",
+    "name": "Pillar of Order",
+    "description": "Pledged allegiance to the AI Core.",
+    "category": "Faction",
+    "points": 30,
+    "icon": "ShieldHalf"
+  },
+  {
+    "id": "join_hacker",
+    "name": "Agent of Change",
+    "description": "Joined the ranks of the Shadow Decoders.",
+    "category": "Faction",
+    "points": 30,
+    "icon": "Zap"
+  },
+  {
+    "id": "first_pvp_victory",
+    "name": "Digital Duelist",
+    "description": "Achieved your first victory in a PvP encounter.",
+    "category": "Combat",
+    "points": 25,
+    "icon": "Swords"
+  },
+  {
+    "id": "assimilate_opponent",
+    "name": "Assimilation Protocol Initiated",
+    "description": "Successfully assimilated an opponent from another faction.",
+    "category": "Combat",
+    "points": 100,
+    "icon": "Network"
+  }
+]

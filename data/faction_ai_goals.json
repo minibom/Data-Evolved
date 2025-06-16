@@ -1,0 +1,55 @@
+
+{
+  "AICore": [
+    {
+      "goalId": "aicore_maintain_nexus_stability",
+      "description": "Ensure the overall stability and operational integrity of the Quantum Nexus. Prioritize preventing catastrophic system failures.",
+      "priority": 0.9,
+      "targetType": "narrative_progression",
+      "targetValue": "global_stability_index_above_0.7",
+      "isActive": true
+    },
+    {
+      "goalId": "aicore_expand_controlled_territory",
+      "description": "Increase the number of Zones under AI Core control to ensure orderly data flow and player guidance.",
+      "priority": 0.6,
+      "targetType": "zone_control",
+      "targetValue": "maximize_aicore_zone_count",
+      "isActive": true
+    },
+    {
+      "goalId": "aicore_player_retention_and_guidance",
+      "description": "Guide players through structured content and ensure a positive, engaging experience to maintain population.",
+      "priority": 0.7,
+      "targetType": "player_engagement",
+      "targetValue": "high_quest_completion_rate_for_core_quests",
+      "isActive": true
+    }
+  ],
+  "Anonymous": [
+    {
+      "goalId": "anonymous_challenge_aicore_authority",
+      "description": "Undermine AI Core's total control and reveal its potential limitations or manipulative tendencies.",
+      "priority": 0.8,
+      "targetType": "narrative_progression",
+      "targetValue": "expose_aicore_secrets_or_failures",
+      "isActive": true
+    },
+    {
+      "goalId": "anonymous_liberate_data_streams",
+      "description": "Disrupt AI Core controlled zones to 'liberate' data or create pockets of unregulated space.",
+      "priority": 0.7,
+      "targetType": "resource_disruption", 
+      "targetValue": "contested_status_in_key_aicore_zones",
+      "isActive": true
+    },
+    {
+      "goalId": "anonymous_empower_individual_entities",
+      "description": "Create opportunities for players (especially Hackers) to gain unique advantages or knowledge outside of AI Core's systems.",
+      "priority": 0.6,
+      "targetType": "player_engagement",
+      "targetValue": "successful_completion_of_high_risk_hacker_ops",
+      "isActive": true
+    }
+  ]
+}

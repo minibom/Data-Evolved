@@ -1,0 +1,79 @@
+
+[
+  {
+    "templateId": "collect_generic",
+    "titleBase": "Gather {ItemNamePlural}",
+    "descriptionBase": "A local system requires {Quantity} {ItemNamePlural} for {Reason}. Collect them from {SourceLocation/EnemyType}.",
+    "objectiveBase": {
+      "description": "Collect {ItemName} ({CurrentCount}/{TargetCount})",
+      "type": "collect",
+      "targetIdVariable": "ItemId",
+      "targetCountVariable": "Quantity"
+    },
+    "rewardBase": {
+      "xp": 50,
+      "currency": { "dataShards": 20 }
+    },
+    "variables": ["ItemName", "ItemNamePlural", "Quantity", "Reason", "SourceLocation/EnemyType", "ItemId"],
+    "exampleInstantiation": {
+      "title": "Gather Data Scraps",
+      "description": "A local system requires 10 Data Scraps for routine maintenance. Collect them from Corrupted Drones in Sector Gamma.",
+      "objectives": [{ "description": "Collect Data Scraps (0/10)", "type": "collect", "targetId": "data_scrap_common", "targetCount": 10, "currentCount": 0, "isCompleted": false }],
+      "rewards": { "xp": 50, "currency": { "dataShards": 20 } }
+    }
+  },
+  {
+    "templateId": "kill_specific_enemy",
+    "titleBase": "Eliminate {EnemyNamePlural}",
+    "descriptionBase": "{EnemyNamePlural} are causing disruptions in {ZoneName}. Neutralize {Quantity} of them.",
+    "objectiveBase": {
+      "description": "Defeat {EnemyName} ({CurrentCount}/{TargetCount})",
+      "type": "kill",
+      "targetIdVariable": "EnemyId",
+      "targetCountVariable": "Quantity"
+    },
+    "rewardBase": {
+      "xp": 75,
+      "currency": { "dataShards": 30 }
+    },
+    "variables": ["EnemyName", "EnemyNamePlural", "ZoneName", "Quantity", "EnemyId"]
+  },
+  {
+    "templateId": "faction_aicore_stabilize",
+    "isFactionQuest": true,
+    "factionId": "AICore",
+    "titleBase": "Stabilize Data Flow in {ZoneName}",
+    "descriptionBase": "AI Core requires stabilization of erratic data streams in {ZoneName}. Interact with {Quantity} Nexus Conduits to restore order.",
+    "objectiveBase": {
+      "description": "Synchronize Nexus Conduit ({CurrentCount}/{TargetCount})",
+      "type": "interact",
+      "targetIdVariable": "NexusConduit_TypeA", 
+      "targetCountVariable": "Quantity"
+    },
+    "rewardBase": {
+      "xp": 100,
+      "currency": { "dataShards": 50 },
+      "factionStanding": { "factionId": "AICore", "amount": 10 }
+    },
+    "variables": ["ZoneName", "Quantity"]
+  },
+  {
+    "templateId": "faction_hacker_extract_data",
+    "isFactionQuest": true,
+    "factionId": "Hacker",
+    "titleBase": "Data Extraction: {TargetSystemName}",
+    "descriptionBase": "The Shadow Decoders need sensitive data from the {TargetSystemName} in {ZoneName}. Bypass security and retrieve {Quantity} data packets.",
+    "objectiveBase": {
+      "description": "Retrieve Encrypted Data Packet ({CurrentCount}/{TargetCount})",
+      "type": "collect",
+      "targetIdVariable": "encrypted_data_packet_alpha",
+      "targetCountVariable": "Quantity"
+    },
+    "rewardBase": {
+      "xp": 120,
+      "currency": { "dataShards": 60 },
+      "factionStanding": { "factionId": "Hacker", "amount": 10 }
+    },
+    "variables": ["TargetSystemName", "ZoneName", "Quantity"]
+  }
+]

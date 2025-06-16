@@ -1,0 +1,58 @@
+
+[
+  {
+    "id": "zone_alpha_nexus_hub",
+    "name": "Nexus Hub Alpha",
+    "description": "A primary data exchange and processing hub, crucial for Quantum Nexus operations. Often patrolled by AI Core Sentinels.",
+    "lore": "Alpha Hub was one of the first stable constructs within the Nexus, a beacon of order.",
+    "environmentType": "urban_digital",
+    "sizeCategory": "medium",
+    "defaultControllingFaction": "AICore",
+    "initialStability": 0.9,
+    "resources": [
+      { "resourceId": "data_scrap_common_node", "density": "moderate" }
+    ],
+    "pointsOfInterest": [
+      { "poiId": "alpha_core_citadel", "name": "AI Core Citadel Alpha", "type": "landmark" },
+      { "poiId": "alpha_market_concourse", "name": "Alpha Market Concourse", "type": "vendor_location" }
+    ],
+    "availableUpgrades": [
+      { "upgradeId": "alpha_defense_grid", "name": "Enhanced Defense Grid", "maxLevel": 3 },
+      { "upgradeId": "alpha_data_conduit", "name": "Optimized Data Conduit", "maxLevel": 2 }
+    ],
+    "coreMission": {
+      "missionId": "stabilize_alpha_hub_initial",
+      "title": "Secure Nexus Hub Alpha",
+      "description": "Ensure the stability of Nexus Hub Alpha by purging corrupted data fragments and reinforcing core systems.",
+      "objectives": ["Eliminate 10 Corrupted Drones", "Activate 3 System Stabilizers"]
+    }
+  },
+  {
+    "id": "zone_beta_data_wastes",
+    "name": "Beta Data Wastes",
+    "description": "An unstable region of the Nexus, filled with fragmented data streams and frequent anomalies. A prime target for Hacker incursions.",
+    "lore": "The Data Wastes are a scar left from an ancient system conflict, never fully repaired.",
+    "environmentType": "corrupted_data_stream",
+    "sizeCategory": "large",
+    "defaultControllingFaction": null,
+    "initialStability": 0.4,
+    "resources": [
+      { "resourceId": "data_scrap_uncommon_node", "density": "rich" },
+      { "resourceId": "anomaly_shards_source", "density": "sparse" }
+    ],
+    "pointsOfInterest": [
+      { "poiId": "beta_glitch_caverns", "name": "Glitch Caverns", "type": "anomaly_hotspot" },
+      { "poiId": "beta_rogue_server_farm", "name": "Rogue Server Farm (Hacker Outpost)", "type": "quest_hub" }
+    ],
+    "availableUpgrades": [
+       { "upgradeId": "beta_stealth_generator", "name": "Stealth Field Generator (Hacker)", "maxLevel": 2 },
+       { "upgradeId": "beta_warding_protocol", "name": "Anomaly Warding Protocol (AI Core)", "maxLevel": 2 }
+    ],
+    "coreMission": {
+      "missionId": "chart_beta_wastes",
+      "title": "Chart the Data Wastes",
+      "description": "Explore the volatile Beta Data Wastes, map out significant anomalies, and report findings.",
+      "objectives": ["Scan 5 Data Anomalies", "Survive 10 minutes in the Wastes"]
+    }
+  }
+]

@@ -1,0 +1,56 @@
+
+[
+  {
+    "id": "data_scrap_common_pack_10",
+    "itemId": "data_scrap_common", 
+    "nameOverride": "Common Data Scrap (Pack of 10)",
+    "quantityInPack": 10,
+    "price": 20,
+    "currencyType": "dataShards",
+    "stock": "infinite",
+    "category": "Materials"
+  },
+  {
+    "id": "health_stim_module_mk1_single",
+    "itemId": "health_stim_module_mk1",
+    "price": 50,
+    "currencyType": "dataShards",
+    "stock": 100,
+    "category": "Consumables"
+  },
+  {
+    "id": "basic_laser_emitter_shop",
+    "itemId": "basic_laser_emitter",
+    "price": 150,
+    "currencyType": "dataShards",
+    "stock": 20,
+    "category": "Equipment",
+    "purchaseConditions": {
+      "requiredLevel": 1
+    }
+  },
+  {
+    "id": "aicore_nanite_repair_kit",
+    "itemId": "aicore_repair_kit_t1", 
+    "nameOverride": "AI Core Nanite Repair Kit",
+    "price": 300,
+    "currencyType": "dataShards",
+    "stock": 10,
+    "category": "Faction Specials",
+    "purchaseConditions": {
+      "requiredFactionId": "AICore"
+    }
+  },
+  {
+    "id": "hacker_decryption_key_basic",
+    "itemId": "hacker_key_t1",
+    "nameOverride": "Basic Decryption Key",
+    "price": 250,
+    "currencyType": "dataShards",
+    "stock": 15,
+    "category": "Faction Specials",
+    "purchaseConditions": {
+      "requiredFactionId": "Hacker"
+    }
+  }
+]

@@ -1,0 +1,41 @@
+
+[
+  {
+    "recipeId": "craft_uncommon_data_cluster",
+    "outputItemId": "data_scrap_uncommon",
+    "outputItemName": "Uncommon Data Cluster",
+    "outputQuantity": 1,
+    "description": "Condense common data scraps into a more potent cluster.",
+    "ingredients": [
+      { "itemId": "data_scrap_common", "quantity": 10 }
+    ],
+    "category": "Materials"
+  },
+  {
+    "recipeId": "craft_health_stim_mk2",
+    "outputItemId": "health_stim_module_mk2",
+    "outputItemName": "Health Stim Module Mk2",
+    "outputQuantity": 1,
+    "description": "A more potent healing consumable.",
+    "ingredients": [
+      { "itemId": "health_stim_module_mk1", "quantity": 2 },
+      { "itemId": "data_scrap_uncommon", "quantity": 3 }
+    ],
+    "category": "Consumables",
+    "skillRequired": "Biochem_Tier1" 
+  },
+  {
+    "recipeId": "upgrade_basic_laser_to_focused",
+    "outputItemId": "focused_laser_emitter",
+    "outputItemName": "Focused Laser Emitter",
+    "outputQuantity": 1,
+    "description": "Refine a basic laser emitter for increased precision and damage.",
+    "ingredients": [
+      { "itemId": "basic_laser_emitter", "quantity": 1 },
+      { "itemId": "data_scrap_uncommon", "quantity": 5 },
+      { "itemId": "lens_crystal_low_grade", "quantity": 2 } 
+    ],
+    "category": "Equipment_Upgrade",
+    "skillRequired": "WeaponSmithing_Tier1"
+  }
+]

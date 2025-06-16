@@ -1,0 +1,26 @@
+
+[
+  {
+    "id": "corrupted_drone_mk1",
+    "name": "Corrupted Drone Mk1",
+    "description": "A common, low-level drone affected by data corruption. Erratic but weak.",
+    "stats": { "power": 30, "memory": 10, "firewall": 2, "ghz": 8 },
+    "skills": ["glitch_shot", "self_repair_minor"],
+    "lootTable": [
+      { "itemId": "data_scrap_common", "chance": 0.8, "quantityMin": 1, "quantityMax": 3 }
+    ],
+    "xpValue": 10
+  },
+  {
+    "id": "data_anomaly_alpha",
+    "name": "Data Anomaly (Alpha Type)",
+    "description": "A shimmering distortion in the Nexus, pulsing with unstable energy.",
+    "stats": { "power": 60, "memory": 50, "firewall": 5, "ghz": 15 },
+    "skills": ["reality_flicker", "data_leech"],
+    "lootTable": [
+      { "itemId": "data_scrap_common", "chance": 0.5, "quantityMin": 2, "quantityMax": 5 },
+      { "itemId": "data_scrap_uncommon", "chance": 0.2, "quantityMin": 1, "quantityMax": 1 }
+    ],
+    "xpValue": 25
+  }
+]

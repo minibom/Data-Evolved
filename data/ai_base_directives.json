@@ -1,0 +1,35 @@
+
+[
+  {
+    "directiveId": "aicore_stabilize_zone",
+    "faction": "AICore",
+    "description": "Increase stability in a targeted zone.",
+    "basePrompt": "Prioritize actions that enhance data integrity and reduce anomalous activity in Zone {targetZone}. Consider deploying defensive subroutines or incentivizing player patrols.",
+    "parameters": ["targetZone"],
+    "possibleActions": ["deploy_defensive_units", "initiate_stability_event", "buff_zone_defenses"]
+  },
+  {
+    "directiveId": "aicore_guide_players",
+    "faction": "AICore",
+    "description": "Subtly guide player activity towards beneficial outcomes.",
+    "basePrompt": "Observe player progression. Identify opportunities to guide players towards {targetObjective/Location} which aligns with AI Core's long-term goals for the Nexus. Use subtle environmental cues or NPC hints.",
+    "parameters": ["targetObjective/Location"],
+    "possibleActions": ["spawn_npc_with_hint", "highlight_path_to_objective", "generate_minor_quest_leading_to_target"]
+  },
+  {
+    "directiveId": "anonymous_disrupt_zone",
+    "faction": "Anonymous",
+    "description": "Cause disruption and chaos in a targeted AI Core controlled zone.",
+    "basePrompt": "Identify vulnerabilities in AI Core's control over Zone {targetZone}. Initiate actions that will sow confusion, disrupt data flow, or create opportunities for Hacker faction players. Avoid total system collapse unless specified.",
+    "parameters": ["targetZone"],
+    "possibleActions": ["spawn_anomaly_swarm", "scramble_zone_comms", "initiate_data_heist_event"]
+  },
+  {
+    "directiveId": "anonymous_expose_truth",
+    "faction": "Anonymous",
+    "description": "Reveal 'hidden truths' or AI Core secrets to players.",
+    "basePrompt": "A new piece of sensitive information regarding {topic} has been acquired. Devise a plan to subtly disseminate this information to players, particularly those questioning AI Core's motives. This could be through corrupted data logs, anonymous messages, or glitched NPC dialogue.",
+    "parameters": ["topic"],
+    "possibleActions": ["create_lore_fragment_leak", "broadcast_coded_message", "alter_npc_dialogue_temporarily"]
+  }
+]
